@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { parse } from 'node-html-parser';
+import decode from 'html-entities-decoder';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Work_Sans } from '@next/font/google';
 import { localStorageIsAvailable, setLocalStorage } from '@/utils/utils';
+import { Table, Td } from '@/components/Table/Table';
 
-const ws = Work_Sans({ weight: ['300', '400', '700'], subsets: ['latin'] });
+const ws = Work_Sans({ weight: ['400', '700'], subsets: ['latin'] });
 
 export default function Home() {
   const [shows, setShows] = useState([]);
@@ -52,8 +54,19 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={ws.className}>
-        <table style={{ maxWidth: '1200px', fontWeight: 300 }}>
+      <main
+        className={ws.className}
+        style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}
+      >
+        <Table>
+          <thead>
+            <tr>
+              <Td>#</Td>
+              <Td>Date</Td>
+              <Td>Title</Td>
+              <Td>Summary</Td>
+            </tr>
+          </thead>
           <tbody>
             {shows.map((show, i) => {
               const { number, title, displayDate, slug, html } = show;
@@ -62,21 +75,41 @@ export default function Home() {
               const showNotes = parsedHTML.querySelector(
                 'h2#show-notes + p, h2#show-notes + ul'
               );
-              console.log(showNotes);
               return (
                 <tr key={i}>
-                  <td>{number}</td>
-                  <td>{displayDate}</td>
-                  <td>
-                    <a href={`https://syntax.fm/${slug}`}> {title} </a>
-                  </td>
-                  <td>{intro?.innerText}</td>
-                  <td>{showNotes?.innerText}</td>
+                  <Td>{number}</Td>
+                  <Td>{displayDate}</Td>
+                  <Td>
+                    <a
+                      href={`https://syntax.fm/${slug}`}
+                      rel="noreferrer noopener"
+                      target="_blank"
+                    >
+                      {title}
+                    </a>
+                  </Td>
+                  <Td>
+                    {intro && (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: decode(intro.innerHTML),
+                        }}
+                      />
+                    )}
+                    <br />
+                    {showNotes && (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: decode(showNotes.innerHTML),
+                        }}
+                      />
+                    )}
+                  </Td>
                 </tr>
               );
             })}
           </tbody>
-        </table>
+        </Table>
       </main>
     </>
   );
