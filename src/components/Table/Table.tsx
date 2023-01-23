@@ -21,11 +21,15 @@ const TdStyles = styled.td`
   li p {
     display: inline-block;
   }
+  ul {
+    margin-left: 1.5rem;
+  }
 `;
 
 const TableStyles = styled.table`
   font-weight: 400;
   position: relative;
+  border: 1px solid var(--coolGray200);
   thead > tr {
     background-color: var(--coolGray800);
     color: #fff;
@@ -37,7 +41,8 @@ const TableStyles = styled.table`
   tbody {
   }
   tr {
-    background-color: var(--coolGray100);
+    background-color: var(--coolGray50);
+    background-color: #fff;
   }
   tr:nth-of-type(2n) {
     background-color: var(--coolGray50);

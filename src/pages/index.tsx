@@ -98,7 +98,7 @@ export default function Home() {
                     )}
                     <br />
                     {showNotes && (
-                      <div
+                      <ul
                         dangerouslySetInnerHTML={{
                           __html: decode(showNotes.innerHTML),
                         }}
