@@ -4,13 +4,20 @@ import decode from 'html-entities-decoder';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Work_Sans } from '@next/font/google';
-import { localStorageIsAvailable, setLocalStorage } from '@/utils/utils';
-import { Table, Td } from '@/components/Table/Table';
+import {
+  localStorageIsAvailable,
+  setLocalStorage,
+  groupByYear,
+} from '@/utils/utils';
+import { Table, Td, Th } from '@/components/Table/Table';
+import { EpisodeCard } from '@/components/Card/Card';
 
 const ws = Work_Sans({ weight: ['400', '700'], subsets: ['latin'] });
 
 export default function Home() {
   const [shows, setShows] = useState([]);
+  const [showByYear, setShowsByYear] = useState({});
+  const [yearRange, setYearRange] = useState<Array<number>>([]);
   const fetchShows = async () => {
     const response = await fetch('https://syntax.fm/api/shows');
     const shows = await response.json();
@@ -46,6 +53,15 @@ export default function Home() {
       return isOld ? getFreshShows() : setShows(JSON.parse(savedShows));
     }
   }, []);
+  useEffect(() => {
+    setShowsByYear(groupByYear(shows));
+  }, [shows]);
+  useEffect(() => {
+    const years = Object.keys(showByYear)
+      .map((year) => parseFloat(year))
+      .sort((a, b) => b - a);
+    setYearRange(years);
+  }, [showByYear]);
   return (
     <>
       <Head>
@@ -56,15 +72,33 @@ export default function Home() {
       </Head>
       <main
         className={ws.className}
-        style={{ maxWidth: 'var(--max-width)', margin: '0 auto' }}
+        style={{
+          maxWidth: 'var(--max-width)',
+          margin: '0 auto',
+          position: 'relative',
+        }}
       >
+        {shows.map((show, i) => {
+          const { number, title, date, slug, html } = show;
+          return (
+            <EpisodeCard
+              key={i}
+              number={number}
+              title={title}
+              date={date}
+              slug={slug}
+              html={html}
+            />
+          );
+        })}
+        {/* <h1>Syntax Podcast: The Missing Browser</h1>
         <Table>
           <thead>
             <tr>
-              <Td>#</Td>
-              <Td>Date</Td>
-              <Td>Title</Td>
-              <Td>Summary</Td>
+              <Th>#</Th>
+              <Th columnWidth="15rem">Date</Th>
+              <Th columnWidth="30rem">Title</Th>
+              <Th>Summary</Th>
             </tr>
           </thead>
           <tbody>
@@ -79,15 +113,15 @@ export default function Home() {
                 <tr key={i}>
                   <Td>{number}</Td>
                   <Td>{displayDate}</Td>
-                  <Td>
-                    <a
+                  <Td> */}
+        {/* <a
                       href={`https://syntax.fm/${slug}`}
                       rel="noreferrer noopener"
                       target="_blank"
-                    >
-                      {title}
-                    </a>
-                  </Td>
+                    > */}
+        {/* {title} */}
+        {/* </a> */}
+        {/* </Td>
                   <Td>
                     {intro && (
                       <div
@@ -109,7 +143,7 @@ export default function Home() {
               );
             })}
           </tbody>
-        </Table>
+        </Table> */}
       </main>
     </>
   );
