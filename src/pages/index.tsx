@@ -72,7 +72,7 @@ export default function Home() {
       >
         {yearRange.map((year) => (
           <YearlySection key={year}>
-            <h2>{year}</h2>
+            <h2 id={`year-${year}`}>{year}</h2>
             <div className="cards">
               {shows[year].map((show, i) => {
                 const { number, title, date, slug, html, category } = show;
