@@ -14,6 +14,7 @@ type CardProps = {
   date: number;
   slug: string;
   html: string;
+  category?: string;
 };
 
 export const EpisodeCard: React.FC<CardProps> = ({
@@ -21,6 +22,7 @@ export const EpisodeCard: React.FC<CardProps> = ({
   title,
   date,
   slug,
+  category,
   html,
 }) => {
   const showDate = new Date(date);
@@ -50,6 +52,7 @@ export const EpisodeCard: React.FC<CardProps> = ({
       <div>
         {month} {day}, {year}
       </div>
+      <div>{category}</div>
       <div>{number}</div> <h3>{title}</h3>
       {intro && (
         <div

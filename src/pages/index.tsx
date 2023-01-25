@@ -1,28 +1,22 @@
 import { useState, useEffect } from 'react';
-import { parse } from 'node-html-parser';
-import decode from 'html-entities-decoder';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Work_Sans } from '@next/font/google';
 import {
   localStorageIsAvailable,
   setLocalStorage,
-  groupByYear,
+  fetchShows,
+  standardizeData,
 } from '@/utils/utils';
-import { Table, Td, Th } from '@/components/Table/Table';
 import { EpisodeCard } from '@/components/Card/Card';
+import { ShowType, ShowsByYear } from '@/types/showTypes';
 
 const ws = Work_Sans({ weight: ['400', '700'], subsets: ['latin'] });
 
 export default function Home() {
-  const [shows, setShows] = useState([]);
-  const [showByYear, setShowsByYear] = useState({});
+  const [shows, setShows] = useState<ShowsByYear>({});
   const [yearRange, setYearRange] = useState<Array<number>>([]);
-  const fetchShows = async () => {
-    const response = await fetch('https://syntax.fm/api/shows');
-    const shows = await response.json();
-    return shows;
-  };
+
   useEffect(() => {
     if (!localStorageIsAvailable('bald_syntax_saved')) {
       setLocalStorage(
@@ -37,8 +31,9 @@ export default function Home() {
     ) as string;
     const getFreshShows = () => {
       fetchShows().then((list) => {
-        setShows(list);
-        setLocalStorage('bald_syntax_shows', JSON.stringify(list));
+        const massagedList = standardizeData(list);
+        setShows(massagedList);
+        setLocalStorage('bald_syntax_shows', JSON.stringify(massagedList));
       });
     };
     if (!savedShows) {
@@ -54,14 +49,11 @@ export default function Home() {
     }
   }, []);
   useEffect(() => {
-    setShowsByYear(groupByYear(shows));
-  }, [shows]);
-  useEffect(() => {
-    const years = Object.keys(showByYear)
+    const years = Object.keys(shows)
       .map((year) => parseFloat(year))
       .sort((a, b) => b - a);
     setYearRange(years);
-  }, [showByYear]);
+  }, [shows]);
   return (
     <>
       <Head>
@@ -78,72 +70,22 @@ export default function Home() {
           position: 'relative',
         }}
       >
-        {shows.map((show, i) => {
-          const { number, title, date, slug, html } = show;
-          return (
-            <EpisodeCard
-              key={i}
-              number={number}
-              title={title}
-              date={date}
-              slug={slug}
-              html={html}
-            />
-          );
-        })}
-        {/* <h1>Syntax Podcast: The Missing Browser</h1>
-        <Table>
-          <thead>
-            <tr>
-              <Th>#</Th>
-              <Th columnWidth="15rem">Date</Th>
-              <Th columnWidth="30rem">Title</Th>
-              <Th>Summary</Th>
-            </tr>
-          </thead>
-          <tbody>
-            {shows.map((show, i) => {
-              const { number, title, displayDate, slug, html } = show;
-              const parsedHTML = parse(html);
-              const intro = parsedHTML.querySelector('p:first-of-type');
-              const showNotes = parsedHTML.querySelector(
-                'h2#show-notes + p, h2#show-notes + ul'
-              );
-              return (
-                <tr key={i}>
-                  <Td>{number}</Td>
-                  <Td>{displayDate}</Td>
-                  <Td> */}
-        {/* <a
-                      href={`https://syntax.fm/${slug}`}
-                      rel="noreferrer noopener"
-                      target="_blank"
-                    > */}
-        {/* {title} */}
-        {/* </a> */}
-        {/* </Td>
-                  <Td>
-                    {intro && (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: decode(intro.innerHTML),
-                        }}
-                      />
-                    )}
-                    <br />
-                    {showNotes && (
-                      <ul
-                        dangerouslySetInnerHTML={{
-                          __html: decode(showNotes.innerHTML),
-                        }}
-                      />
-                    )}
-                  </Td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table> */}
+        {yearRange.map((year) =>
+          shows[year].map((show, i) => {
+            const { number, title, date, slug, html, category } = show;
+            return (
+              <EpisodeCard
+                key={i}
+                number={number}
+                title={title}
+                date={date}
+                slug={slug}
+                html={html}
+                category={category}
+              />
+            );
+          })
+        )}
       </main>
     </>
   );
