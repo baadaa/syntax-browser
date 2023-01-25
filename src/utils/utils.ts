@@ -1,4 +1,4 @@
-import { ShowType, ShowsByYear } from '@/types/showTypes';
+import { ShowType, ShowsByYear, CategoryName } from '@/types';
 
 export const setLocalStorage = (key = '', data = ''): void => {
   window.localStorage.setItem(key, data);
@@ -36,4 +36,30 @@ export const addCategory = (show: ShowType) => {
   if (isPotluck) return { ...show, category: 'potluck' };
   if (isHasty) return { ...show, category: 'hasty' };
   return { ...show, category: 'regular' };
+};
+
+export const nameMonth = (index: number) =>
+  [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ][index];
+
+export const categoryName = (str: CategoryName) => {
+  const list = {
+    supper: 'Supper Club',
+    potluck: 'Potluck',
+    hasty: 'Hasty Treat',
+    regular: 'Regular',
+  };
+  return list[str] || 'Regular';
 };

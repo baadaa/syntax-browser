@@ -8,10 +8,10 @@ import {
   fetchShows,
   standardizeData,
 } from '@/utils/utils';
-import { EpisodeCard } from '@/components/Card/Card';
+import { Card, YearlySection } from '@/components/Card/Card';
 import { ShowType, ShowsByYear } from '@/types/showTypes';
 
-const ws = Work_Sans({ weight: ['400', '700'], subsets: ['latin'] });
+const ws = Work_Sans({ weight: ['400', '600', '700'], subsets: ['latin'] });
 
 export default function Home() {
   const [shows, setShows] = useState<ShowsByYear>({});
@@ -71,23 +71,25 @@ export default function Home() {
         }}
       >
         {yearRange.map((year) => (
-          <section key={year}>
+          <YearlySection key={year}>
             <h2>{year}</h2>
-            {shows[year].map((show, i) => {
-              const { number, title, date, slug, html, category } = show;
-              return (
-                <EpisodeCard
-                  key={i}
-                  number={number}
-                  title={title}
-                  date={date}
-                  slug={slug}
-                  html={html}
-                  category={category}
-                />
-              );
-            })}
-          </section>
+            <div className="cards">
+              {shows[year].map((show, i) => {
+                const { number, title, date, slug, html, category } = show;
+                return (
+                  <Card
+                    key={i}
+                    number={number}
+                    title={title}
+                    date={date}
+                    slug={slug}
+                    html={html}
+                    category={category}
+                  />
+                );
+              })}
+            </div>
+          </YearlySection>
         ))}
       </main>
     </>
