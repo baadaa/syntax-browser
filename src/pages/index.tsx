@@ -70,22 +70,25 @@ export default function Home() {
           position: 'relative',
         }}
       >
-        {yearRange.map((year) =>
-          shows[year].map((show, i) => {
-            const { number, title, date, slug, html, category } = show;
-            return (
-              <EpisodeCard
-                key={i}
-                number={number}
-                title={title}
-                date={date}
-                slug={slug}
-                html={html}
-                category={category}
-              />
-            );
-          })
-        )}
+        {yearRange.map((year) => (
+          <section key={year}>
+            <h2>{year}</h2>
+            {shows[year].map((show, i) => {
+              const { number, title, date, slug, html, category } = show;
+              return (
+                <EpisodeCard
+                  key={i}
+                  number={number}
+                  title={title}
+                  date={date}
+                  slug={slug}
+                  html={html}
+                  category={category}
+                />
+              );
+            })}
+          </section>
+        ))}
       </main>
     </>
   );
