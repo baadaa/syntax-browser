@@ -2,37 +2,42 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { parse } from 'node-html-parser';
 import decode from 'html-entities-decoder';
-import { CategoryName } from '@/types';
+import { CategoryName, Props } from '@/types';
 import { nameMonth, categoryName } from '@/utils/utils';
 
 const SectionStyles = styled.section`
-  margin-top: 3rem;
-  padding-top: 3rem;
-  border-top: 1px solid var(--coolGray200);
+  & + & {
+    margin-top: var(--section-spacing);
+  }
+  padding-top: var(--episode-spacing);
+  border-top: 1px solid var(--section-border);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   h2 {
     position: sticky;
     font-size: 3rem;
-    top: 1rem;
+    font-weight: 600;
+    color: var(--section-heading-color);
+    top: 2rem;
+    width: 16rem;
   }
   article + article {
-    border-top: 1px solid var(--coolGray200);
-    margin-top: 4rem;
-    padding-top: 4rem;
+    border-top: 1px solid var(--episode-border);
+    margin-top: var(--episode-spacing);
+    padding-top: var(--episode-spacing);
   }
 `;
 const CardStyles = styled.article`
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: 10rem auto 45rem;
-  border-radius: 1rem;
   max-width: 90rem;
   font-size: 1.4rem;
   line-height: 1.5;
   .toggle {
     padding: 0.5rem 0.2rem;
+    margin-top: 1rem;
     font-size: 1.4rem;
     background: transparent;
     color: var(--cyan700);
@@ -58,6 +63,9 @@ const CardStyles = styled.article`
     font-size: 1.8rem;
     line-height: 1.5;
     font-weight: 400;
+  }
+  .date {
+    font-size: 1.2rem;
   }
   h3 a {
     color: var(--cyan700);
@@ -106,13 +114,16 @@ const CardStyles = styled.article`
     text-transform: uppercase;
     margin-top: 1rem;
     letter-spacing: 0.04em;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     padding: 0.3rem 0.9rem;
     background-color: var(--cyan100);
     color: var(--cyan800);
     border-radius: 2rem;
     border: 1px solid var(--cyan500);
+    &::before {
+      content: '🍖 ';
+    }
     &[data-type='hasty'] {
       background-color: var(--red100);
       color: var(--red800);
@@ -126,7 +137,7 @@ const CardStyles = styled.article`
       border-color: var(--green500);
       color: var(--green800);
       &::before {
-        content: '🍪 ';
+        content: '🍷 ';
       }
     }
     &[data-type='potluck'] {
@@ -134,7 +145,7 @@ const CardStyles = styled.article`
       border-color: var(--yellow500);
       color: var(--yellow800);
       &::before {
-        content: '🍪 ';
+        content: '🍱 ';
       }
     }
   }
@@ -148,9 +159,7 @@ type CardProps = {
   html: string;
   category?: string;
 };
-type Props = {
-  children: React.ReactNode;
-};
+
 export const YearlySection: React.FC<Props> = ({ children }) => (
   <SectionStyles>{children}</SectionStyles>
 );
@@ -176,13 +185,17 @@ export const Card: React.FC<CardProps> = ({
     <CardStyles>
       <div>
         <div className="ep">{number}</div>
-        <div>
+        <div className="date">
           {month} {day}, {year}
         </div>
       </div>
       <div>
         <h3>
-          <a href={slug} target="_blank" rel="noreferrer noopener">
+          <a
+            href={`https://syntax.fm${slug}`}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             {title}
           </a>
         </h3>
@@ -198,7 +211,6 @@ export const Card: React.FC<CardProps> = ({
             }}
           />
         )}
-        <br />
         {showNotes && (
           <>
             <button

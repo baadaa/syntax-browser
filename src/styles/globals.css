@@ -1,5 +1,5 @@
 :root {
-  --max-width: 1100px;
+  --max-width: 1500px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
@@ -81,7 +81,7 @@ html {
 body {
   margin: 0;
   position: relative;
-  padding: 1rem .5rem;
+  padding: 0 1.5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: inherit;
@@ -94,11 +94,14 @@ body {
   font-feature-settings: 'kern', 'liga', 'clig', 'calt';
   color: var(--coolGray900);
   --body-bg: var(--coolGray50);
-  --table-border: var(--coolGray100);
-  --table-heading-bg: var(--cyan700);
-  --table-heading-text: #fff;
-  --table-cell-bg: #fff;
-  --table-cell-alt-bg: var(--cyan50);
+  --page-heading-color: var(--cyan700);
+  --page-subheading-color: var(--green600);
+  --section-heading-color: var(--coolGray500);
+  --episode-border: var(--coolGray100);
+  --section-border: var(--coolGray200);
+  --section-spacing: 9rem;
+  --episode-spacing: 3rem;
+  --heading-height: 3rem;
 
   background-color: var(--body-bg);
 }
@@ -106,16 +109,29 @@ body {
 a {
   color: inherit;
 }
-h1 {
+aside {
   position: sticky;
-  background-color: var(--body-bg);
-  margin: 0;
-  padding: .5rem 0;
-  top: 0px;
-  font-size: 2rem;
+  top: 2rem;
+}
+h1 {
+  margin:0;
+  padding:0;
+  color: var(--page-heading-color);
+  line-height: 1.6;
+  font-size: 3.2rem;
+  font-weight: 400;
+  max-width: 45rem;
   z-index: 9;
 }
 
+h1 span {
+  display: block;
+  color: var(--page-subheading-color);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: .35em;
+  font-size: .5em;
+}
 @media (prefers-color-scheme: dark) {
   /* html {
     color-scheme: dark;
