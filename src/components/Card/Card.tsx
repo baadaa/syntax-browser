@@ -216,7 +216,7 @@ export const Card: React.FC<CardProps> = ({
     'h2#show-notes + p, h2#show-notes + ul'
   );
   return (
-    <CardStyles>
+    <CardStyles id={`episode-${number}`}>
       <div>
         <div className="ep">{number}</div>
         <div className="date">

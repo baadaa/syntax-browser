@@ -113,6 +113,34 @@ export default function Home() {
                   </option>
                 ))}
               </select>
+              <label htmlFor="search">Search</label>
+              <div className="inputbox">
+                <input type="text" placeholder="Type something..." />
+                <button>
+                  <svg
+                    viewBox="0 0 34 34"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle
+                      cx="14"
+                      cy="14"
+                      r="11.5"
+                      stroke="white"
+                      stroke-width="5"
+                    />
+                    <line
+                      x1="23.5355"
+                      y1="24"
+                      x2="31"
+                      y2="31.4645"
+                      stroke="white"
+                      stroke-width="5"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </aside>

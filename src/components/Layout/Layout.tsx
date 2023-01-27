@@ -31,16 +31,47 @@ const LayoutStyles = styled.div`
     display: inline-block;
   }
   select,
-  option {
+  option,
+  input {
     font-size: 1.6rem;
-    padding: 0.5rem 0.2rem;
+    padding: 0.5rem;
     outline: none;
+    max-width: 100%;
     font-family: inherit;
     background-color: var(--input-bg);
     &:focus {
       box-shadow: var(--focus-shadow);
     }
     border: 1px solid var(--section-border);
+  }
+  input {
+    margin: 0;
+    padding-right: 4rem;
+    margin-right: -4rem;
+    box-sizing: border-box;
+  }
+  .inputbox {
+    position: relative;
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      border: none;
+      outline: none;
+      background-color: var(--search-btn-bg);
+      &:focus {
+        box-shadow: var(--focus-shadow);
+      }
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
   }
   .filters {
     margin-top: 2rem;
@@ -52,7 +83,7 @@ const LayoutStyles = styled.div`
   .filter-item {
     display: grid;
     grid-gap: 1rem;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
   }
 `;

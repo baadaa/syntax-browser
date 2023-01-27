@@ -105,6 +105,7 @@ body {
   --episode-spacing: 3rem;
   --filter-box-bg: #fff;
   --input-bg: var(--cyan50);
+  --search-btn-bg: var(--green500);
   --focus-shadow: 0 2px 15px rgba(50, 200, 240, 0.6);
 
   background-color: var(--body-bg);
