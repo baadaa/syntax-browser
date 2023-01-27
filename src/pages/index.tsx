@@ -21,7 +21,10 @@ export default function Home() {
   const [filteredList, setFilteredList] = useState<ShowsByYear>({});
   const [yearRange, setYearRange] = useState<Array<number>>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<
+    Array<Fuse.FuseResult<DictionaryType>>
+  >([]);
   const [dictionary, setDictionary] = useState<Array<DictionaryType>>([]);
   const searchEl = useRef(null);
   const fuse = new Fuse(dictionary, {
@@ -30,6 +33,11 @@ export default function Home() {
     shouldSort: true,
     keys: ['title'],
   });
+  const resetSearch = () => {
+    setSearchTerm('');
+    setSearchResults([]);
+    setIsSearching(false);
+  };
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const queryStr = e.currentTarget.value;
     setSearchTerm(queryStr);
@@ -38,8 +46,26 @@ export default function Home() {
       setSearchTerm('');
       return;
     }
-    const foundTerms = fuse.search(queryStr);
+    if (queryStr.length < 4) return;
+    const foundTerms: Array<Fuse.FuseResult<DictionaryType>> =
+      fuse.search<DictionaryType>(queryStr);
+    setSearchResults(foundTerms);
+    displaySearchResults();
     console.log(foundTerms);
+  };
+  const displaySearchResults = () => {
+    if (searchResults.length === 0) return null;
+    const list = searchResults.map((query) => (
+      <li key={query.item.id}>
+        <a href={query.item.id}>
+          <Highlighter
+            searchWords={[...searchTerm]}
+            textToHighlight={query.item.title}
+          />
+        </a>
+      </li>
+    ));
+    return <ul>{list}</ul>;
   };
   const handleYearSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const targetYear = e.target.value;
@@ -191,6 +217,9 @@ export default function Home() {
                   />
                 </svg>
               </button>
+            </div>
+            <div className="searchResult" data-active={isSearching}>
+              {displaySearchResults()}
             </div>
           </div>
         </aside>

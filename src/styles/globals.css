@@ -57,6 +57,7 @@
   --coolGray200: #C6C8D2;
   --coolGray100: #E3E4E8;
   --coolGray50: #F1F1F4;
+  scroll-behavior: smooth;
 }
 
 @media (prefers-color-scheme: dark) {

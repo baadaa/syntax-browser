@@ -81,6 +81,22 @@ const LayoutStyles = styled.div`
     border-radius: 1.2rem;
     box-shadow: var(--base-shadow);
   }
+  .search {
+    position: relative;
+    label {
+      position: sticky;
+      top: 0;
+    }
+    .inputbox {
+      position: sticky;
+      top: 2.5rem;
+    }
+    .searchResult {
+      margin-top: 1rem;
+      max-height: 30rem;
+      overflow-y: auto;
+    }
+  }
   .filter-item {
     display: grid;
     grid-gap: 1rem;
