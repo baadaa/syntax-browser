@@ -18,11 +18,13 @@ const LayoutStyles = styled.div`
   main {
     max-width: 1024px;
   }
-  h5 {
+  h5,
+  .filters.search label {
+    display: block;
     font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.18em;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     text-transform: uppercase;
     color: var(--section-heading-color);
   }
@@ -36,7 +38,6 @@ const LayoutStyles = styled.div`
     font-size: 1.6rem;
     padding: 0.5rem;
     outline: none;
-    max-width: 100%;
     font-family: inherit;
     background-color: var(--input-bg);
     &:focus {
@@ -45,9 +46,9 @@ const LayoutStyles = styled.div`
     border: 1px solid var(--section-border);
   }
   input {
+    width: 100%;
     margin: 0;
     padding-right: 4rem;
-    margin-right: -4rem;
     box-sizing: border-box;
   }
   .inputbox {
@@ -83,7 +84,7 @@ const LayoutStyles = styled.div`
   .filter-item {
     display: grid;
     grid-gap: 1rem;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 3fr;
     align-items: center;
   }
 `;
