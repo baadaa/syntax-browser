@@ -4,7 +4,7 @@
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-  --base-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+  --base-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
   --hover-shadow: 3px 7px 15px rgba(0, 0, 0, 0.1),
     -1px 3px 25px rgba(0, 0, 0, 0.1);
   --cyan900: #0a2129;
@@ -95,13 +95,17 @@ body {
   color: var(--coolGray900);
   --body-bg: var(--coolGray50);
   --page-heading-color: var(--cyan700);
-  --page-subheading-color: var(--green600);
+  --page-subheading-color: var(--cyan500);
   --section-heading-color: var(--coolGray500);
+  --shownotes-bg: var(--coolGray100);
+  --error-msg-color: var(--yellow600);
   --episode-border: var(--coolGray100);
   --section-border: var(--coolGray200);
   --section-spacing: 9rem;
   --episode-spacing: 3rem;
-  --heading-height: 3rem;
+  --filter-box-bg: #fff;
+  --input-bg: var(--cyan50);
+  --focus-shadow: 0 2px 15px rgba(50, 200, 240, 0.6);
 
   background-color: var(--body-bg);
 }
@@ -120,7 +124,6 @@ h1 {
   line-height: 1.6;
   font-size: 3.2rem;
   font-weight: 400;
-  max-width: 45rem;
   z-index: 9;
 }
 

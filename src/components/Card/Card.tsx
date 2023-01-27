@@ -16,7 +16,7 @@ const SectionStyles = styled.section`
   justify-content: space-between;
   h2 {
     position: sticky;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 600;
     color: var(--section-heading-color);
     top: 2rem;
@@ -28,6 +28,19 @@ const SectionStyles = styled.section`
     padding-top: var(--episode-spacing);
   }
 `;
+const NoMatchStyles = styled.div`
+  flex: 1;
+  font-size: 2rem;
+  line-height: 3rem;
+  display: flex;
+  font-weight: 400;
+  color: var(--error-msg-color);
+  span {
+    font-size: 1.5em;
+    margin-right: 1rem;
+  }
+  align-items: center;
+`;
 const CardStyles = styled.article`
   display: grid;
   grid-gap: 2rem;
@@ -35,13 +48,23 @@ const CardStyles = styled.article`
   max-width: 90rem;
   font-size: 1.4rem;
   line-height: 1.5;
+  /* & > * {
+    transition: transform 0.2s;
+  }
+  &:hover {
+    & > * {
+      transform: translateX(-2px);
+    }
+  } */
   .toggle {
-    padding: 0.5rem 0.2rem;
+    padding: 0.5rem 1rem;
     margin-top: 1rem;
     font-size: 1.4rem;
     background: transparent;
     color: var(--cyan700);
+    transform: translate(-1rem);
     border: none;
+    border-radius: 3rem;
     outline: none;
     cursor: pointer;
     transition: transform 0.2s;
@@ -49,10 +72,10 @@ const CardStyles = styled.article`
       content: '📕 ';
     }
     &:focus {
-      box-shadow: 0 2px 15px rgba(50, 200, 240, 0.5);
+      box-shadow: var(--focus-shadow);
     }
     &:hover {
-      transform: translateX(2px);
+      transform: translateX(-1rem) translateY(-1px);
     }
     &[data-expanded='true']::before {
       content: '📖 ';
@@ -72,18 +95,23 @@ const CardStyles = styled.article`
     display: inline-block;
     text-decoration: none;
     transition: transform 0.2s;
+    outline: none;
     &:hover {
       transform: translateY(-2px);
+    }
+    &:focus {
+      box-shadow: var(--focus-shadow);
     }
   }
   ul {
     margin-top: 1rem;
     border-radius: 1rem;
-    background-color: var(--coolGray100);
+    background-color: var(--shownotes-bg);
     box-sizing: border-box;
     padding: 0 2rem;
     font-size: 1.2rem;
     max-height: 0;
+    visibility: hidden;
     overflow: hidden;
     li {
       margin-left: 1rem;
@@ -93,6 +121,7 @@ const CardStyles = styled.article`
     }
     transition: max-height 0.5s, padding 0.5s;
     &[data-expanded='true'] {
+      visibility: visible;
       max-height: 200vh;
       padding: 2rem;
     }
@@ -113,12 +142,12 @@ const CardStyles = styled.article`
     display: inline-block;
     text-transform: uppercase;
     margin-top: 1rem;
-    letter-spacing: 0.04em;
-    font-size: 0.9rem;
-    font-weight: 600;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+    font-weight: 700;
     padding: 0.3rem 0.9rem;
     background-color: var(--cyan100);
-    color: var(--cyan800);
+    color: var(--cyan700);
     border-radius: 2rem;
     border: 1px solid var(--cyan500);
     &::before {
@@ -126,7 +155,7 @@ const CardStyles = styled.article`
     }
     &[data-type='hasty'] {
       background-color: var(--red100);
-      color: var(--red800);
+      color: var(--red700);
       border-color: var(--red500);
       &::before {
         content: '🍪 ';
@@ -135,7 +164,7 @@ const CardStyles = styled.article`
     &[data-type='supper'] {
       background-color: var(--green100);
       border-color: var(--green500);
-      color: var(--green800);
+      color: var(--green700);
       &::before {
         content: '🍷 ';
       }
@@ -143,7 +172,7 @@ const CardStyles = styled.article`
     &[data-type='potluck'] {
       background-color: var(--yellow100);
       border-color: var(--yellow500);
-      color: var(--yellow800);
+      color: var(--yellow700);
       &::before {
         content: '🍱 ';
       }
@@ -160,8 +189,13 @@ type CardProps = {
   category?: string;
 };
 
-export const YearlySection: React.FC<Props> = ({ children }) => (
-  <SectionStyles>{children}</SectionStyles>
+export const YearlySection: React.FC<Props> = ({ children, id }) => (
+  <SectionStyles id={id}>{children}</SectionStyles>
+);
+export const NoMatch: React.FC<Props> = () => (
+  <NoMatchStyles>
+    <span>😢 </span> No episode found under selected category
+  </NoMatchStyles>
 );
 export const Card: React.FC<CardProps> = ({
   number,
