@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Highlighter from 'react-highlight-words';
+import Fuse from 'fuse.js';
 import Head from 'next/head';
+import { Card, YearlySection, NoMatch } from '@/components/Card/Card';
+import { Layout } from '@/components/Layout/Layout';
+import { ShowsByYear, CategoryName } from '@/types';
 import {
   localStorageIsAvailable,
   setLocalStorage,
@@ -7,15 +12,35 @@ import {
   standardizeData,
   categoryName,
 } from '@/utils/utils';
-import { Card, YearlySection, NoMatch } from '@/components/Card/Card';
-import { Layout } from '@/components/Layout/Layout';
-import { ShowsByYear, CategoryName } from '@/types';
-
+type DictionaryType = {
+  id: string;
+  title: string;
+};
 export default function Home() {
   const [shows, setShows] = useState<ShowsByYear>({});
   const [filteredList, setFilteredList] = useState<ShowsByYear>({});
   const [yearRange, setYearRange] = useState<Array<number>>([]);
-
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [dictionary, setDictionary] = useState<Array<DictionaryType>>([]);
+  const searchEl = useRef(null);
+  const fuse = new Fuse(dictionary, {
+    isCaseSensitive: false,
+    includeMatches: true,
+    shouldSort: true,
+    keys: ['title'],
+  });
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const queryStr = e.currentTarget.value;
+    setSearchTerm(queryStr);
+    if (queryStr === '') {
+      setSearchResults([]);
+      setSearchTerm('');
+      return;
+    }
+    const foundTerms = fuse.search(queryStr);
+    console.log(foundTerms);
+  };
   const handleYearSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const targetYear = e.target.value;
     const targetEl = document.querySelector(`#year-${targetYear}`);
@@ -38,6 +63,21 @@ export default function Home() {
     }
     setFilteredList(filteredByCategory);
   };
+  useEffect(() => {
+    const arr = [];
+    for (const years in filteredList) {
+      arr.push(...filteredList[years]);
+    }
+    const dict = arr.map((item) => {
+      const { number, title, html } = item;
+      return {
+        id: `#episode-${number}`,
+        title,
+      };
+    });
+    setDictionary(dict);
+    // console.log(filteredList, arr);
+  }, [filteredList]);
   useEffect(() => {
     if (!localStorageIsAvailable('bald_syntax_saved')) {
       setLocalStorage(
@@ -116,9 +156,17 @@ export default function Home() {
             </div>
           </div>
           <div className="filters search">
-            <label htmlFor="search">Search for:</label>
+            <label htmlFor="searchBar">Search for:</label>
             <div className="inputbox">
-              <input type="text" placeholder="Type something..." />
+              <input
+                type="text"
+                ref={searchEl}
+                id="searchBar"
+                name="searchBar"
+                value={searchTerm}
+                onChange={handleSearchInput}
+                placeholder="Type something..."
+              />
               <button>
                 <svg
                   viewBox="0 0 34 34"
