@@ -48,7 +48,7 @@ const LayoutStyles = styled.div`
   input {
     width: 100%;
     margin: 0;
-    padding-right: 4rem;
+    padding-right: 5.5rem;
     box-sizing: border-box;
   }
   .inputbox {
@@ -63,14 +63,31 @@ const LayoutStyles = styled.div`
       justify-content: center;
       width: 3rem;
       border: none;
+      cursor: pointer;
       outline: none;
+      transition: background-color 0.2s;
       background-color: var(--search-btn-bg);
       &:focus {
         box-shadow: var(--focus-shadow);
       }
+      &:hover {
+        background-color: var(--search-btn-hover-bg);
+      }
       svg {
         width: 1.5rem;
         height: 1.5rem;
+      }
+    }
+    button.cancel {
+      right: 3rem;
+      background: none;
+      background-color: transparent;
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+      &:focus {
+        box-shadow: none;
       }
     }
   }
@@ -95,6 +112,10 @@ const LayoutStyles = styled.div`
       margin-top: 1rem;
       max-height: 30rem;
       overflow-y: auto;
+      display: none;
+    }
+    .searchResult[data-active='true'] {
+      display: block;
     }
   }
   .filter-item {

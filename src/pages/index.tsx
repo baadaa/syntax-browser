@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Highlighter from 'react-highlight-words';
-import Fuse from 'fuse.js';
+import { parse } from 'node-html-parser';
 import Head from 'next/head';
+import { SearchBox } from '@/components/SearchBox/SearchBox';
 import { Card, YearlySection, NoMatch } from '@/components/Card/Card';
 import { Layout } from '@/components/Layout/Layout';
-import { ShowsByYear, CategoryName } from '@/types';
+import { ShowsByYear, CategoryName, DictionaryType } from '@/types';
 import {
   localStorageIsAvailable,
   setLocalStorage,
@@ -12,61 +12,12 @@ import {
   standardizeData,
   categoryName,
 } from '@/utils/utils';
-type DictionaryType = {
-  id: string;
-  title: string;
-};
+
 export default function Home() {
   const [shows, setShows] = useState<ShowsByYear>({});
   const [filteredList, setFilteredList] = useState<ShowsByYear>({});
   const [yearRange, setYearRange] = useState<Array<number>>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<
-    Array<Fuse.FuseResult<DictionaryType>>
-  >([]);
   const [dictionary, setDictionary] = useState<Array<DictionaryType>>([]);
-  const searchEl = useRef(null);
-  const fuse = new Fuse(dictionary, {
-    isCaseSensitive: false,
-    includeMatches: true,
-    shouldSort: true,
-    keys: ['title'],
-  });
-  const resetSearch = () => {
-    setSearchTerm('');
-    setSearchResults([]);
-    setIsSearching(false);
-  };
-  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const queryStr = e.currentTarget.value;
-    setSearchTerm(queryStr);
-    if (queryStr === '') {
-      setSearchResults([]);
-      setSearchTerm('');
-      return;
-    }
-    if (queryStr.length < 4) return;
-    const foundTerms: Array<Fuse.FuseResult<DictionaryType>> =
-      fuse.search<DictionaryType>(queryStr);
-    setSearchResults(foundTerms);
-    displaySearchResults();
-    console.log(foundTerms);
-  };
-  const displaySearchResults = () => {
-    if (searchResults.length === 0) return null;
-    const list = searchResults.map((query) => (
-      <li key={query.item.id}>
-        <a href={query.item.id}>
-          <Highlighter
-            searchWords={[...searchTerm]}
-            textToHighlight={query.item.title}
-          />
-        </a>
-      </li>
-    ));
-    return <ul>{list}</ul>;
-  };
   const handleYearSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const targetYear = e.target.value;
     const targetEl = document.querySelector(`#year-${targetYear}`);
@@ -96,13 +47,15 @@ export default function Home() {
     }
     const dict = arr.map((item) => {
       const { number, title, html } = item;
+      const text = parse(html).innerText;
       return {
-        id: `#episode-${number}`,
+        number,
+        hash: `#episode-${number}`,
         title,
+        text,
       };
     });
     setDictionary(dict);
-    // console.log(filteredList, arr);
   }, [filteredList]);
   useEffect(() => {
     if (!localStorageIsAvailable('bald_syntax_saved')) {
@@ -181,47 +134,7 @@ export default function Home() {
               </select>
             </div>
           </div>
-          <div className="filters search">
-            <label htmlFor="searchBar">Search for:</label>
-            <div className="inputbox">
-              <input
-                type="text"
-                ref={searchEl}
-                id="searchBar"
-                name="searchBar"
-                value={searchTerm}
-                onChange={handleSearchInput}
-                placeholder="Type something..."
-              />
-              <button>
-                <svg
-                  viewBox="0 0 34 34"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="14"
-                    cy="14"
-                    r="11.5"
-                    stroke="white"
-                    stroke-width="5"
-                  />
-                  <line
-                    x1="23.5355"
-                    y1="24"
-                    x2="31"
-                    y2="31.4645"
-                    stroke="white"
-                    stroke-width="5"
-                    stroke-linecap="round"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="searchResult" data-active={isSearching}>
-              {displaySearchResults()}
-            </div>
-          </div>
+          <SearchBox dictionary={dictionary} />
         </aside>
         <main>
           {yearRange.map((year) => {
