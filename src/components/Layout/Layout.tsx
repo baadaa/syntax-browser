@@ -18,8 +18,7 @@ const LayoutStyles = styled.div`
   main {
     max-width: 1024px;
   }
-  h5,
-  .filters.search label {
+  h5 {
     display: block;
     font-size: 1.2rem;
     font-weight: 700;
@@ -50,6 +49,15 @@ const LayoutStyles = styled.div`
     margin: 0;
     padding-right: 5.5rem;
     box-sizing: border-box;
+  }
+  .radios {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    input {
+      width: auto;
+    }
   }
   .inputbox {
     position: relative;

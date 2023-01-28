@@ -1,20 +1,21 @@
 import * as React from 'react';
 import Highlighter from 'react-highlight-words';
 import Fuse from 'fuse.js';
-import { DictionaryType, SearchProps } from '@/types';
+import { DictionaryType, SearchProps, SearchOptions } from '@/types';
 
 const fuseOption = {
   isCaseSensitive: false,
   includeMatches: true,
   shouldSort: true,
-  minMatchCharLengh: 2,
+  minMatchCharLength: 2,
   threshold: 1,
-  distance: 100,
+  distance: 5,
 };
 
 export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
   const searchEl = React.useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchBy, setSearchBy] = React.useState<SearchOptions>('title');
   const [isEntered, setIsEntered] = React.useState(false);
   const [searchResults, setSearchResults] = React.useState<
     Array<Fuse.FuseResult<DictionaryType>>
@@ -26,6 +27,7 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
   });
   const fuseText = new Fuse(dictionary, {
     ...fuseOption,
+    minMatchCharLength: 4,
     keys: ['text'],
   });
   const resetSearch = () => {
@@ -36,10 +38,15 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
   const triggerSearch = () => {
     if (searchTerm.length < 4) return;
     setIsEntered(true);
-    const foundTerms: Array<Fuse.FuseResult<DictionaryType>> =
+    const foundTitles: Array<Fuse.FuseResult<DictionaryType>> =
       fuseTitle.search<DictionaryType>(searchTerm.trim());
-    setSearchResults(foundTerms);
+    const foundNotes: Array<Fuse.FuseResult<DictionaryType>> =
+      fuseText.search<DictionaryType>(searchTerm.trim());
+    setSearchResults(searchBy === 'title' ? foundTitles : foundNotes);
     displaySearchResults();
+  };
+  const toggleSearchOption = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchBy(e.target.value as SearchOptions);
   };
   const checkSpecialKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { key } = e;
@@ -67,10 +74,18 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
         <a href={query.item.hash}>
           <>
             {query.item.number} -{' '}
-            <Highlighter
-              searchWords={[...searchTerm]}
-              textToHighlight={query.item.title}
-            />
+            {searchBy === 'title' && (
+              <Highlighter
+                searchWords={[...searchTerm]}
+                textToHighlight={query.item[searchBy]}
+              />
+            )}
+            {searchBy === 'text' && (
+              <Highlighter
+                searchWords={[searchTerm]}
+                textToHighlight={query.item[searchBy]}
+              />
+            )}
           </>
         </a>
       </li>
@@ -78,11 +93,14 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
     return <ul>{list}</ul>;
   };
   React.useEffect(() => {
+    console.log(searchResults);
+  }, [searchResults]);
+  React.useEffect(() => {
     if (!isEntered) setSearchResults([]);
   }, [searchTerm, isEntered]);
   return (
     <div className="filters search">
-      <label htmlFor="searchBar">Search for:</label>
+      <h5>Search for:</h5>
       <div className="inputbox">
         <input
           type="text"
@@ -129,6 +147,26 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
           </svg>
         </button>
       </div>
+      <form className="radios">
+        <input
+          type="radio"
+          name="searchBy"
+          id="byTitle"
+          value="title"
+          checked={searchBy === 'title'}
+          onChange={toggleSearchOption}
+        />
+        <label htmlFor="byTitle">Title</label>
+        <input
+          type="radio"
+          name="searchBy"
+          id="byShowNote"
+          value="text"
+          checked={searchBy === 'text'}
+          onChange={toggleSearchOption}
+        />
+        <label htmlFor="byShowNote">Show Note</label>
+      </form>
       <div className="searchResult" data-active={isEntered}>
         {displaySearchResults()}
       </div>

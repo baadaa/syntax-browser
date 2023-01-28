@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { parse } from 'node-html-parser';
 import Head from 'next/head';
 import { SearchBox } from '@/components/SearchBox/SearchBox';

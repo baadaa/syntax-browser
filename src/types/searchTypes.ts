@@ -8,3 +8,5 @@ export type DictionaryType = {
 export type SearchProps = {
   dictionary: Array<DictionaryType>;
 };
+
+export type SearchOptions = 'title' | 'text';
