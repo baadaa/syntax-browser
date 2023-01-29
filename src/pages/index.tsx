@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { parse } from 'node-html-parser';
 import Head from 'next/head';
-import { SearchBox } from '@/components/SearchBox/SearchBox';
 import { Card, YearlySection, NoMatch } from '@/components/Card/Card';
-import { Layout } from '@/components/Layout/Layout';
+import { Layout } from '@/components/Layout';
+import { SearchBox } from '@/components/Search/SearchBox';
 import { ShowsByYear, CategoryName, DictionaryType } from '@/types';
 import {
   localStorageIsAvailable,

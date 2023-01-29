@@ -1,22 +1,40 @@
 import * as React from 'react';
-import Highlighter from 'react-highlight-words';
 import Fuse from 'fuse.js';
-import { DictionaryType, SearchProps, SearchOptions } from '@/types';
+import { fuseOption, MIN_QUERY_LENGTH } from './searchOptions';
+import { DictionaryType, SearchProps } from '@/types';
 
-const fuseOption = {
-  isCaseSensitive: false,
-  includeMatches: true,
-  shouldSort: true,
-  minMatchCharLength: 2,
-  threshold: 1,
-  distance: 5,
+type HighlightProps = {
+  matches: Array<Fuse.FuseResultMatch>;
+};
+const HighlightText: React.FC<HighlightProps> = ({ matches }) => {
+  // highlighting method adopted from
+  // https://dev.to/noclat/using-fuse-js-with-react-to-build-an-advanced-search-with-highlighting-4b93
+
+  const match = matches[0];
+  const highlight = (
+    value = '',
+    indices: Array<Fuse.RangeTuple>,
+    i = 1
+  ): React.ReactNode => {
+    const pair = indices[indices.length - i];
+    return !pair ? (
+      value
+    ) : (
+      <>
+        {highlight(value.substring(0, pair[0]), indices, i + 1)}
+        <mark>{value.substring(pair[0], pair[1] + 1)}</mark>
+        {value.substring(pair[1] + 1)}
+      </>
+    );
+  };
+  return <>{highlight(match.value, match.indices as Array<Fuse.RangeTuple>)}</>;
 };
 
 export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
   const searchEl = React.useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [searchBy, setSearchBy] = React.useState<SearchOptions>('title');
   const [isEntered, setIsEntered] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
   const [searchResults, setSearchResults] = React.useState<
     Array<Fuse.FuseResult<DictionaryType>>
   >([]);
@@ -25,28 +43,24 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
     ...fuseOption,
     keys: ['title'],
   });
-  const fuseText = new Fuse(dictionary, {
-    ...fuseOption,
-    minMatchCharLength: 4,
-    keys: ['text'],
-  });
   const resetSearch = () => {
     setSearchTerm('');
     setSearchResults([]);
     setIsEntered(false);
+    setErrorMessage('');
   };
   const triggerSearch = () => {
-    if (searchTerm.length < 4) return;
-    setIsEntered(true);
+    if (searchTerm.length < MIN_QUERY_LENGTH)
+      return setErrorMessage(`Provide at least ${MIN_QUERY_LENGTH} characters`);
     const foundTitles: Array<Fuse.FuseResult<DictionaryType>> =
       fuseTitle.search<DictionaryType>(searchTerm.trim());
-    const foundNotes: Array<Fuse.FuseResult<DictionaryType>> =
-      fuseText.search<DictionaryType>(searchTerm.trim());
-    setSearchResults(searchBy === 'title' ? foundTitles : foundNotes);
+    if (foundTitles.length === 0) {
+      setErrorMessage('No matching results found');
+      return;
+    }
+    setSearchResults(foundTitles);
+    setIsEntered(true);
     displaySearchResults();
-  };
-  const toggleSearchOption = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchBy(e.target.value as SearchOptions);
   };
   const checkSpecialKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { key } = e;
@@ -58,7 +72,6 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
         triggerSearch();
         break;
       default:
-        setSearchResults([]);
         setIsEntered(false);
         break;
     }
@@ -68,33 +81,21 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
     setSearchTerm(queryStr.replaceAll('\\', ''));
   };
   const displaySearchResults = () => {
-    if (searchResults.length === 0) return null;
-    const list = searchResults.map((query) => (
-      <li key={query.item.hash}>
-        <a href={query.item.hash}>
+    const list = searchResults.map((hit) => (
+      <li key={hit.item.hash}>
+        <a href={hit.item.hash}>
           <>
-            {query.item.number} -{' '}
-            {searchBy === 'title' && (
-              <Highlighter
-                searchWords={[...searchTerm]}
-                textToHighlight={query.item[searchBy]}
-              />
-            )}
-            {searchBy === 'text' && (
-              <Highlighter
-                searchWords={[searchTerm]}
-                textToHighlight={query.item[searchBy]}
-              />
-            )}
+            {hit.item.number} -{' '}
+            <HighlightText
+              matches={hit.matches as Array<Fuse.FuseResultMatch>}
+            />
           </>
         </a>
       </li>
     ));
     return <ul>{list}</ul>;
   };
-  React.useEffect(() => {
-    console.log(searchResults);
-  }, [searchResults]);
+
   React.useEffect(() => {
     if (!isEntered) setSearchResults([]);
   }, [searchTerm, isEntered]);
@@ -111,6 +112,9 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
           onChange={handleSearchInput}
           onKeyUp={checkSpecialKey}
           placeholder="Type something..."
+          style={{
+            boxShadow: errorMessage ? 'var(--error-shadow)' : undefined,
+          }}
         />
         {searchTerm && (
           <button className="cancel" onClick={resetSearch} tabIndex={-1}>
@@ -147,26 +151,7 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
           </svg>
         </button>
       </div>
-      <form className="radios">
-        <input
-          type="radio"
-          name="searchBy"
-          id="byTitle"
-          value="title"
-          checked={searchBy === 'title'}
-          onChange={toggleSearchOption}
-        />
-        <label htmlFor="byTitle">Title</label>
-        <input
-          type="radio"
-          name="searchBy"
-          id="byShowNote"
-          value="text"
-          checked={searchBy === 'text'}
-          onChange={toggleSearchOption}
-        />
-        <label htmlFor="byShowNote">Show Note</label>
-      </form>
+      {errorMessage && <div className="error">{errorMessage}</div>}
       <div className="searchResult" data-active={isEntered}>
         {displaySearchResults()}
       </div>

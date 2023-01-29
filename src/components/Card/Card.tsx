@@ -34,7 +34,7 @@ const NoMatchStyles = styled.div`
   line-height: 3rem;
   display: flex;
   font-weight: 400;
-  color: var(--error-msg-color);
+  color: var(--sad-message-color);
   span {
     font-size: 1.5em;
     margin-right: 1rem;
@@ -119,7 +119,6 @@ const CardStyles = styled.article`
     li + li {
       margin-top: 0.5rem;
     }
-    transition: max-height 0.5s, padding 0.5s;
     &[data-expanded='true'] {
       visibility: visible;
       max-height: 200vh;

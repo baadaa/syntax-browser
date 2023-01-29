@@ -125,6 +125,10 @@ const LayoutStyles = styled.div`
     .searchResult[data-active='true'] {
       display: block;
     }
+    .error {
+      color: var(--error-message-color);
+      margin-top: 1rem;
+    }
   }
   .filter-item {
     display: grid;

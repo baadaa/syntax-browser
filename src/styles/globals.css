@@ -99,7 +99,8 @@ body {
   --page-subheading-color: var(--cyan500);
   --section-heading-color: var(--coolGray500);
   --shownotes-bg: var(--coolGray100);
-  --error-msg-color: var(--yellow600);
+  --sad-message-color: var(--yellow600);
+  --error-message-color: var(--red600);
   --episode-border: var(--coolGray100);
   --section-border: var(--coolGray200);
   --section-spacing: 9rem;
@@ -109,6 +110,7 @@ body {
   --search-btn-bg: var(--green500);
   --search-btn-hover-bg: var(--green600);
   --focus-shadow: 0 2px 15px rgba(50, 200, 240, 0.6);
+  --error-shadow: 0 2px 15px rgba(200, 50, 50, 0.6);
 
   background-color: var(--body-bg);
 }
