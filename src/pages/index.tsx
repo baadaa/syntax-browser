@@ -3,7 +3,7 @@ import { parse } from 'node-html-parser';
 import Head from 'next/head';
 import { Card, YearlySection, NoMatch } from '@/components/Card/Card';
 import { Layout } from '@/components/Layout';
-import { SearchBox } from '@/components/Search/SearchBox';
+import { Aside, SearchBox } from '@/components/Aside';
 import { ShowsByYear, CategoryName, DictionaryType } from '@/types';
 import {
   localStorageIsAvailable,
@@ -98,44 +98,46 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Syntax.fm Podcast: The Missing Browser</title>
+        <title>Syntax Podcast: The Missing Browser</title>
         <meta name="description" content="Syntax Podcast browser" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <aside>
+        <Aside>
           <h1>
-            Syntax.fm Podcast: <span>The Missing Browser</span>
+            Syntax Podcast: <span>The Missing Browser</span>
           </h1>
-          <div className="filters">
-            <h5>Browse By:</h5>
-            <div className="filter-item">
-              <label htmlFor="year">Year</label>
-              <select name="year" id="year" onChange={handleYearSelector}>
-                {yearRange.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-              <label htmlFor="category">Category</label>
-              <select
-                name="category"
-                id="category"
-                onChange={handleCategorySelector}
-              >
-                <option value="all">All</option>
-                {['regular', 'potluck', 'hasty', 'supper'].map((category) => (
-                  <option key={category} value={category}>
-                    {categoryName(category as CategoryName)}
-                  </option>
-                ))}
-              </select>
+          <div className="set">
+            <div className="filters">
+              <h5>Browse By:</h5>
+              <div className="filter-item">
+                <label htmlFor="year">Year</label>
+                <select name="year" id="year" onChange={handleYearSelector}>
+                  {yearRange.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+                <label htmlFor="category">Category</label>
+                <select
+                  name="category"
+                  id="category"
+                  onChange={handleCategorySelector}
+                >
+                  <option value="all">All</option>
+                  {['regular', 'potluck', 'hasty', 'supper'].map((category) => (
+                    <option key={category} value={category}>
+                      {categoryName(category as CategoryName)}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+            <SearchBox dictionary={dictionary} />
           </div>
-          <SearchBox dictionary={dictionary} />
-        </aside>
+        </Aside>
         <main>
           {yearRange.map((year) => {
             const yearlyList = filteredList[year];
