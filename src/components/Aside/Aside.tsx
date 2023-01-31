@@ -3,6 +3,19 @@ import styled from 'styled-components';
 import { Props } from '@/types';
 const AsideStyles = styled.aside`
   max-width: 30rem;
+  .toggleFilters {
+    outline: none;
+    border: none;
+    background-color: var(--coolGray900);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    border-radius: 3rem;
+    position: absolute;
+    top: 5rem;
+    right: 1rem;
+    z-index: 999;
+  }
   h5 {
     display: block;
     font-size: 1.2rem;
@@ -141,13 +154,29 @@ const AsideStyles = styled.aside`
       }
     }
     .set {
+      transition: transform 0.2s, opacity 0.2s;
+      pointer-events: none;
       transform: translateX(20rem);
+      opacity: 0;
       width: 30rem;
       position: absolute;
-      top: 5rem;
+      top: 8rem;
       right: 1rem;
+      background-color: #fff;
+      box-shadow: var(--base-shadow);
+      border-radius: 1.2rem;
     }
     .filters {
+      margin: 0;
+      box-shadow: none;
+    }
+    .filters + .filters {
+      padding-top: 0.5rem;
+    }
+    &[data-active='true'] .set {
+      transform: translateX(0);
+      pointer-events: all;
+      opacity: 1;
     }
   }
   @media screen and (max-width: 750px) {
@@ -160,6 +189,17 @@ const AsideStyles = styled.aside`
   }
 `;
 
-export const Aside: React.FC<Props> = ({ children }) => (
-  <AsideStyles>{children}</AsideStyles>
-);
+export const Aside: React.FC<Props> = ({ children }) => {
+  const [isActive, setIsActive] = React.useState(false);
+  return (
+    <AsideStyles data-active={isActive}>
+      <h1>
+        Syntax Podcast: <span>The Missing Browser</span>
+      </h1>
+      <button className="toggleFilters" onClick={() => setIsActive(!isActive)}>
+        Filter &amp; Search
+      </button>
+      {children}
+    </AsideStyles>
+  );
+};

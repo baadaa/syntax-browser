@@ -3,14 +3,13 @@ import { parse } from 'node-html-parser';
 import Head from 'next/head';
 import { Card, YearlySection, NoMatch } from '@/components/Card/Card';
 import { Layout } from '@/components/Layout';
-import { Aside, SearchBox } from '@/components/Aside';
-import { ShowsByYear, CategoryName, DictionaryType } from '@/types';
+import { Aside, FilterBox, SearchBox } from '@/components/Aside';
+import { ShowsByYear, DictionaryType } from '@/types';
 import {
   localStorageIsAvailable,
   setLocalStorage,
   fetchShows,
   standardizeData,
-  categoryName,
 } from '@/utils/utils';
 
 export default function Home() {
@@ -105,36 +104,12 @@ export default function Home() {
       </Head>
       <Layout>
         <Aside>
-          <h1>
-            Syntax Podcast: <span>The Missing Browser</span>
-          </h1>
           <div className="set">
-            <div className="filters">
-              <h5>Browse By:</h5>
-              <div className="filter-item">
-                <label htmlFor="year">Year</label>
-                <select name="year" id="year" onChange={handleYearSelector}>
-                  {yearRange.map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>
-                <label htmlFor="category">Category</label>
-                <select
-                  name="category"
-                  id="category"
-                  onChange={handleCategorySelector}
-                >
-                  <option value="all">All</option>
-                  {['regular', 'potluck', 'hasty', 'supper'].map((category) => (
-                    <option key={category} value={category}>
-                      {categoryName(category as CategoryName)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+            <FilterBox
+              yearRange={yearRange}
+              handleCategorySelector={handleCategorySelector}
+              handleYearSelector={handleYearSelector}
+            />
             <SearchBox dictionary={dictionary} />
           </div>
         </Aside>
