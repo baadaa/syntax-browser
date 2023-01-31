@@ -27,6 +27,24 @@ const SectionStyles = styled.section`
     margin-top: var(--episode-spacing);
     padding-top: var(--episode-spacing);
   }
+  @media screen and (max-width: 1400px) {
+    flex-direction: column;
+    h2 {
+      top: 1rem;
+      margin-bottom: 3rem;
+      background-color: rgba(255, 255, 255, 0.6);
+      box-shadow: var(--base-shadow);
+      border-radius: 1rem;
+      font-size: 2rem;
+      padding: 1rem;
+      transform: translateX(-1rem);
+      width: auto;
+    }
+    article:first-of-type {
+      padding-top: var(--episode-spacing);
+      border-top: 1px solid var(--episode-border);
+    }
+  }
 `;
 const NoMatchStyles = styled.div`
   flex: 1;
@@ -48,14 +66,6 @@ const CardStyles = styled.article`
   max-width: 90rem;
   font-size: 1.4rem;
   line-height: 1.5;
-  /* & > * {
-    transition: transform 0.2s;
-  }
-  &:hover {
-    & > * {
-      transform: translateX(-2px);
-    }
-  } */
   .toggle {
     padding: 0.5rem 1rem;
     margin-top: 1rem;
@@ -177,6 +187,12 @@ const CardStyles = styled.article`
       }
     }
   }
+  @media screen and (max-width: 1300px) {
+    grid-template-columns: 10rem auto;
+    .summary {
+      grid-column-start: 2;
+    }
+  }
 `;
 
 type CardProps = {
@@ -216,13 +232,13 @@ export const Card: React.FC<CardProps> = ({
   );
   return (
     <CardStyles id={`episode-${number}`}>
-      <div>
+      <div className="catalog">
         <div className="ep">{number}</div>
         <div className="date">
           {month} {day}, {year}
         </div>
       </div>
-      <div>
+      <div className="title">
         <h3>
           <a
             href={`https://syntax.fm${slug}`}

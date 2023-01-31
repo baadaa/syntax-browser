@@ -12,11 +12,52 @@ const LayoutStyles = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   max-width: var(--max-width);
+
   aside {
     max-width: 30rem;
   }
   main {
     max-width: 1024px;
+  }
+  @media screen and (max-width: 1300px) {
+    justify-content: flex-start;
+    main {
+      max-width: 70rem;
+      margin-left: 10rem;
+    }
+  }
+  @media screen and (max-width: 1140px) {
+    flex-direction: column;
+    align-items: center;
+    aside {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      max-width: 100%;
+      width: 100%;
+      justify-content: space-between;
+      display: flex;
+      padding: 1.5rem;
+      flex-wrap: wrap;
+      background-color: #fff;
+    }
+    h1 {
+      width: 100%;
+      font-size: 2.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      span {
+        margin-left: 1rem;
+        font-size: 0.7em;
+        letter-spacing: 0.15em;
+      }
+    }
+    main {
+      margin-left: 0;
+      margin-top: 2rem;
+    }
   }
   h5 {
     display: block;
