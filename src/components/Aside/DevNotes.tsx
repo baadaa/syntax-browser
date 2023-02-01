@@ -15,7 +15,14 @@ export const DevNotes: React.FC<AboutProp> = ({ isActive }) => (
       <a href="https://syntax.fm" target="_blank" rel="noreferrer noopener">
         Syntax
       </a>{' '}
-      content more easily.
+      content more easily. Browse the code at{' '}
+      <a
+        href="https://github.com/baadaa/syntax-browser"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        the GitHub repo
+      </a>
     </p>
     <p>
       All rights are reserved for original content creators{' '}
