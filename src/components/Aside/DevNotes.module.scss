@@ -1,0 +1,21 @@
+.devnote {
+  position: fixed;
+  z-index: 90;
+  border-radius: 1rem;
+  top: 3rem;
+  right: 3rem;
+  width: 22rem;
+  box-shadow: var(--hover-shadow);
+  background-color: rgba(0, 10, 20, 0.85);
+  color: white;
+  padding: 2rem;
+  opacity: 0;
+  transform: translateY(-5rem);
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  &[data-showing='true'] {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+}

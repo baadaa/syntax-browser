@@ -104,14 +104,12 @@ export default function Home() {
       </Head>
       <Layout>
         <Aside>
-          <div className="set">
-            <FilterBox
-              yearRange={yearRange}
-              handleCategorySelector={handleCategorySelector}
-              handleYearSelector={handleYearSelector}
-            />
-            <SearchBox dictionary={dictionary} />
-          </div>
+          <FilterBox
+            yearRange={yearRange}
+            handleCategorySelector={handleCategorySelector}
+            handleYearSelector={handleYearSelector}
+          />
+          <SearchBox dictionary={dictionary} />
         </Aside>
         <main>
           {yearRange.map((year) => {

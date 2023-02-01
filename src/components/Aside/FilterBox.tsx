@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { CategoryName } from '@/types';
 import { categoryName } from '@/utils/utils';
+import css from './Aside.module.scss';
 
 type FilterProps = {
   yearRange: Array<number>;
@@ -13,9 +14,9 @@ export const FilterBox: React.FC<FilterProps> = ({
   handleCategorySelector,
 }) => {
   return (
-    <div className="filters">
+    <div className={css.filters}>
       <h5>Browse By:</h5>
-      <div className="filter-item">
+      <div className={css.filter_item}>
         <label htmlFor="year">Year</label>
         <select name="year" id="year" onChange={handleYearSelector}>
           {yearRange.map((year) => (

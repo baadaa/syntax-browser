@@ -2,6 +2,7 @@ import * as React from 'react';
 import Fuse from 'fuse.js';
 import { fuseOption, MIN_QUERY_LENGTH } from './searchOptions';
 import { DictionaryType, SearchProps } from '@/types';
+import css from './Aside.module.scss';
 
 type HighlightProps = {
   matches: Array<Fuse.FuseResultMatch>;
@@ -100,9 +101,9 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
     if (!isEntered) setSearchResults([]);
   }, [searchTerm, isEntered]);
   return (
-    <div className="filters search">
+    <div className={`${css.filters} ${css.search}`}>
       <h5>Search for:</h5>
-      <div className="inputbox">
+      <div className={css.inputbox}>
         <input
           type="text"
           ref={searchEl}
@@ -117,7 +118,7 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
           }}
         />
         {searchTerm && (
-          <button className="cancel" onClick={resetSearch} tabIndex={-1}>
+          <button className={css.cancel} onClick={resetSearch} tabIndex={-1}>
             <svg
               viewBox="0 0 23 24"
               fill="none"
@@ -151,8 +152,8 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
           </svg>
         </button>
       </div>
-      {errorMessage && <div className="error">{errorMessage}</div>}
-      <div className="searchResult" data-active={isEntered}>
+      {errorMessage && <div className={css.error}>{errorMessage}</div>}
+      <div className={css.searchResult} data-active={isEntered}>
         {displaySearchResults()}
       </div>
     </div>

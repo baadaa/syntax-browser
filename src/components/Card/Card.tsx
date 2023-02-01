@@ -1,239 +1,9 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { parse } from 'node-html-parser';
 import decode from 'html-entities-decoder';
 import { CategoryName, Props } from '@/types';
 import { nameMonth, categoryName } from '@/utils/utils';
-
-const SectionStyles = styled.section`
-  & + & {
-    margin-top: var(--section-spacing);
-  }
-  padding-top: var(--episode-spacing);
-  border-top: 1px solid var(--section-border);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  h2 {
-    position: sticky;
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: var(--section-heading-color);
-    top: 2rem;
-    width: 16rem;
-    z-index: 8;
-    pointer-events: none;
-  }
-  article + article {
-    border-top: 1px solid var(--episode-border);
-    margin-top: var(--episode-spacing);
-    padding-top: var(--episode-spacing);
-  }
-  @media screen and (max-width: 1400px) {
-    flex-direction: column;
-    h2 {
-      top: 2rem;
-      margin-bottom: 3rem;
-      background-color: rgba(255, 255, 255, 0.6);
-      box-shadow: var(--base-shadow);
-      border-radius: 1rem;
-      font-size: 2rem;
-      padding: 1rem;
-      transform: translateX(-1rem);
-      width: auto;
-    }
-    article:first-of-type {
-      padding-top: var(--episode-spacing);
-      border-top: 1px solid var(--episode-border);
-    }
-  }
-  @media screen and (max-width: 1140px) {
-    h2 {
-      top: 6rem;
-      transform: translateX(-10rem);
-    }
-  }
-  @media screen and (max-width: 950px) {
-    h2 {
-      transform: translateX(-1rem);
-    }
-  }
-  @media screen and (max-width: 550px) {
-    h2 {
-      transform: translateX(-8rem);
-    }
-  }
-  @media screen and (max-width: 480px) {
-    h2 {
-      transform: translateX(-1rem) translateY(1rem);
-    }
-  }
-`;
-const NoMatchStyles = styled.div`
-  flex: 1;
-  font-size: 2rem;
-  line-height: 3rem;
-  display: flex;
-  font-weight: 400;
-  color: var(--sad-message-color);
-  span {
-    font-size: 1.5em;
-    margin-right: 1rem;
-  }
-  align-items: center;
-`;
-const CardStyles = styled.article`
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: 10rem auto 45rem;
-  max-width: 90rem;
-  font-size: 1.4rem;
-  line-height: 1.5;
-  .toggle {
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
-    font-size: 1.4rem;
-    background: transparent;
-    color: var(--cyan700);
-    transform: translate(-1rem);
-    border: none;
-    border-radius: 3rem;
-    outline: none;
-    cursor: pointer;
-    transition: transform 0.2s;
-    &::before {
-      content: '📕 ';
-    }
-    &:focus {
-      box-shadow: var(--focus-shadow);
-    }
-    &:hover {
-      transform: translateX(-1rem) translateY(-1px);
-    }
-    &[data-expanded='true']::before {
-      content: '📖 ';
-    }
-  }
-  .ep,
-  h3 {
-    font-size: 1.8rem;
-    line-height: 1.5;
-    font-weight: 400;
-  }
-  .date {
-    font-size: 1.2rem;
-  }
-  h3 a {
-    color: var(--cyan700);
-    display: inline-block;
-    text-decoration: none;
-    transition: transform 0.2s;
-    outline: none;
-    &:hover {
-      transform: translateY(-2px);
-    }
-    &:focus {
-      box-shadow: var(--focus-shadow);
-    }
-  }
-  ul {
-    margin-top: 1rem;
-    border-radius: 1rem;
-    background-color: var(--shownotes-bg);
-    box-sizing: border-box;
-    padding: 0 2rem;
-    font-size: 1.2rem;
-    max-height: 0;
-    visibility: hidden;
-    overflow: hidden;
-    li {
-      margin-left: 1rem;
-    }
-    li + li {
-      margin-top: 0.5rem;
-    }
-    &[data-expanded='true'] {
-      visibility: visible;
-      max-height: 200vh;
-      padding: 2rem;
-    }
-  }
-  strong a {
-    font-weight: 600;
-    text-decoration: none;
-    font-family: monospace;
-    font-size: 1rem;
-    display: inline-block;
-    padding: 0.2rem 0.5rem;
-    background-color: var(--coolGray200);
-  }
-  .summary {
-    max-width: 50rem;
-  }
-  .category {
-    display: inline-block;
-    text-transform: uppercase;
-    margin-top: 1rem;
-    letter-spacing: 0.06em;
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 0.3rem 0.9rem;
-    background-color: var(--cyan100);
-    color: var(--cyan700);
-    border-radius: 2rem;
-    border: 1px solid var(--cyan500);
-    &::before {
-      content: '🍖 ';
-    }
-    &[data-type='hasty'] {
-      background-color: var(--red100);
-      color: var(--red700);
-      border-color: var(--red500);
-      &::before {
-        content: '🍪 ';
-      }
-    }
-    &[data-type='supper'] {
-      background-color: var(--green100);
-      border-color: var(--green500);
-      color: var(--green700);
-      &::before {
-        content: '🍷 ';
-      }
-    }
-    &[data-type='potluck'] {
-      background-color: var(--yellow100);
-      border-color: var(--yellow500);
-      color: var(--yellow700);
-      &::before {
-        content: '🍱 ';
-      }
-    }
-  }
-  @media screen and (max-width: 1300px) {
-    grid-template-columns: 10rem auto;
-    .summary {
-      grid-column-start: 2;
-    }
-  }
-  @media screen and (max-width: 750px) {
-    max-width: 50rem;
-    display: block;
-
-    .catalog {
-      display: flex;
-      align-items: center;
-    }
-    .ep::after {
-      content: '•';
-      margin: 0 0.75rem;
-      opacity: 0.3;
-    }
-  }
-  @media screen and (max-width: 550px) {
-    max-width: 30rem;
-  }
-`;
+import css from './Card.module.scss';
 
 type CardProps = {
   number: number;
@@ -245,12 +15,14 @@ type CardProps = {
 };
 
 export const YearlySection: React.FC<Props> = ({ children, id }) => (
-  <SectionStyles id={id}>{children}</SectionStyles>
+  <section className={css.year} id={id}>
+    {children}
+  </section>
 );
 export const NoMatch: React.FC<Props> = () => (
-  <NoMatchStyles>
+  <div className={css.no_match}>
     <span>😢 </span> No episode found under selected category
-  </NoMatchStyles>
+  </div>
 );
 export const Card: React.FC<CardProps> = ({
   number,
@@ -271,14 +43,14 @@ export const Card: React.FC<CardProps> = ({
     'h2#show-notes + p, h2#show-notes + ul'
   );
   return (
-    <CardStyles id={`episode-${number}`}>
-      <div className="catalog">
-        <div className="ep">{number}</div>
-        <div className="date">
+    <article className={css.card} id={`episode-${number}`}>
+      <div className={css.catalog}>
+        <div className={css.ep}>{number}</div>
+        <div className={css.date}>
           {month} {day}, {year}
         </div>
       </div>
-      <div className="title">
+      <div className={css.title}>
         <h3>
           <a
             href={`https://syntax.fm${slug}`}
@@ -288,11 +60,11 @@ export const Card: React.FC<CardProps> = ({
             {title}
           </a>
         </h3>
-        <span className="category" data-type={category}>
+        <span className={css.category} data-type={category}>
           {categoryName(category as CategoryName)}
         </span>
       </div>
-      <div className="summary">
+      <div className={css.summary}>
         {intro && (
           <div
             dangerouslySetInnerHTML={{
@@ -304,7 +76,7 @@ export const Card: React.FC<CardProps> = ({
           <>
             <button
               data-expanded={isExpanded}
-              className="toggle"
+              className={css.toggle}
               onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? 'Close' : 'Open'} show notes
@@ -318,6 +90,6 @@ export const Card: React.FC<CardProps> = ({
           </>
         )}
       </div>
-    </CardStyles>
+    </article>
   );
 };
