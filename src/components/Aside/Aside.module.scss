@@ -31,7 +31,7 @@
     color: var(--yellow900);
     font-weight: 800;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+    transition: background-color 0.5s, color 0.25s, transform 0.25s;
     box-shadow: var(--base-shadow);
     &:hover {
       box-shadow: var(--hover-shadow);
@@ -156,9 +156,25 @@
     }
     .searchResult {
       margin-top: 1rem;
-      max-height: 30rem;
+      max-height: 35rem;
       overflow-y: auto;
       display: none;
+      li {
+        font-size: 1.2rem;
+      }
+      li a {
+        text-decoration: none;
+      }
+      li a:hover {
+        text-decoration: underline;
+        color: var(--cyan800);
+      }
+      li + li {
+        margin-top: .75rem;
+      }
+      mark {
+        background-color: var(--cyan100);
+      }
     }
     .searchResult[data-active='true'] {
       display: block;

@@ -39,10 +39,14 @@ export const Card: React.FC<CardProps> = ({
   const day = showDate.getDate();
   const parsedHTML = parse(html);
   const intro = parsedHTML.querySelector('p:first-of-type');
-  const showNotes = parsedHTML.querySelector(
-    'h2#show-notes + p, h2#show-notes + ul'
-  );
-
+  const showNotes = parsedHTML
+    .querySelectorAll(
+      `h2#show-notes ~ *:not(h2), 
+       h2#the-show-notes ~ *:not(h2), 
+       h2#the-buzz-words ~ *:not(h2)`
+    )
+    .map((el) => el.innerHTML)
+    .join('');
   const processSlug = () => {
     const str = slug.split('/');
     switch (str[2].length) {
@@ -109,7 +113,7 @@ export const Card: React.FC<CardProps> = ({
           <ul
             data-expanded={isExpanded}
             dangerouslySetInnerHTML={{
-              __html: decode(showNotes.innerHTML),
+              __html: decode(showNotes),
             }}
           />
         )}

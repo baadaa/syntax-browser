@@ -100,7 +100,7 @@ export default function Home() {
         <title>Syntax Podcast: The Missing Browser</title>
         <meta name="description" content="Syntax Podcast browser" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/barbecue.png" />
       </Head>
       <Layout>
         <Aside>

@@ -10,9 +10,9 @@
   color: white;
   padding: 2rem;
   opacity: 0;
-  transform: translateY(-5rem);
+  transform: translateY(-3rem);
   pointer-events: none;
-  transition: opacity .2s, transform .2s;
+  transition: opacity .5s, transform .5s;
   &[data-showing='true'] {
     opacity: 1;
     transform: translateY(0);
