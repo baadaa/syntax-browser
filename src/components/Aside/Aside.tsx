@@ -6,15 +6,24 @@ const AsideStyles = styled.aside`
   .toggleFilters {
     outline: none;
     border: none;
-    background-color: var(--coolGray900);
-    color: #fff;
+    cursor: pointer;
+    transform-origin: bottom right;
+    transform: translateX(0) rotate(-90deg);
+    background-color: var(--cyan800);
+    color: white;
     padding: 0.5rem 1rem;
     font-size: 1.2rem;
-    border-radius: 3rem;
+    border-radius: 1rem 1rem 0 0;
+    transition: transform 0.2s, background-color 0.2s;
     position: absolute;
     top: 5rem;
-    right: 1rem;
+    right: 0rem;
     z-index: 999;
+    display: none;
+    box-shadow: var(--base-shadow);
+    &:hover {
+      background-color: var(--green800);
+    }
   }
   h5 {
     display: block;
@@ -160,11 +169,11 @@ const AsideStyles = styled.aside`
       opacity: 0;
       width: 30rem;
       position: absolute;
-      top: 8rem;
-      right: 1rem;
+      top: 6rem;
+      right: 0rem;
       background-color: #fff;
       box-shadow: var(--base-shadow);
-      border-radius: 1.2rem;
+      border-radius: 1rem 0 0 1rem;
     }
     .filters {
       margin: 0;
@@ -173,10 +182,18 @@ const AsideStyles = styled.aside`
     .filters + .filters {
       padding-top: 0.5rem;
     }
-    &[data-active='true'] .set {
-      transform: translateX(0);
-      pointer-events: all;
-      opacity: 1;
+    .toggleFilters {
+      display: inline-block;
+    }
+    &[data-active='true'] {
+      .set {
+        transform: translateX(0);
+        pointer-events: all;
+        opacity: 1;
+      }
+      .toggleFilters {
+        transform: translateX(-30rem) rotate(-90deg);
+      }
     }
   }
   @media screen and (max-width: 750px) {
