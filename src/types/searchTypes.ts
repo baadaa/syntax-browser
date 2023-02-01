@@ -1,3 +1,5 @@
+import { FetchDataSet } from './fetchingDataTypes';
+
 export type DictionaryType = {
   number: number;
   hash: string;
@@ -7,6 +9,7 @@ export type DictionaryType = {
 
 export type SearchProps = {
   dictionary: Array<DictionaryType>;
+  browseBy: FetchDataSet;
 };
 
 export type SearchOptions = 'title' | 'text';

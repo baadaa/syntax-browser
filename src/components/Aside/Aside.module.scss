@@ -190,6 +190,30 @@
     grid-template-columns: 1fr 3fr;
     align-items: center;
   }
+  .radios {
+    display: flex;
+    padding: .5rem 0;
+    margin-bottom: 1rem;
+    label {
+      margin-left: .5rem;
+      text-transform: capitalize;
+      flex: 1;
+      cursor: pointer;
+    }
+    input {
+      cursor: pointer;
+      flex: 0;
+    }
+    .elem {
+      display: flex;
+      max-width: 100%;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .elem + .elem {
+      margin-left: 2rem;
+    }
+  }
   @media screen and (max-width: 1140px) {
     position: fixed;
     z-index: 9;

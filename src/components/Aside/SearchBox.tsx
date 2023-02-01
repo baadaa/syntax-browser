@@ -32,7 +32,7 @@ const HighlightText: React.FC<HighlightProps> = ({ matches }) => {
   return <>{highlight(match.value, match.indices as Array<Fuse.RangeTuple>)}</>;
 };
 
-export const SearchBox: React.FC<SearchProps> = ({ dictionary }) => {
+export const SearchBox: React.FC<SearchProps> = ({ dictionary, browseBy }) => {
   const searchEl = React.useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = React.useState('');
   const [isEntered, setIsEntered] = React.useState(false);

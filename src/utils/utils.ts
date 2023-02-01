@@ -1,4 +1,4 @@
-import { ShowType, ShowsByYear, CategoryName } from '@/types';
+import { ShowType, ShowsByYear, CategoryName, FetchDataSet } from '@/types';
 
 export const setLocalStorage = (key = '', data = ''): void => {
   window.localStorage.setItem(key, data);
@@ -16,10 +16,12 @@ export const standardizeData = (showList: Array<ShowType>) => {
   }, {} as ShowsByYear);
 };
 
-export const fetchShows = async () => {
-  const response = await fetch('https://syntax.fm/api/shows');
-  const shows = await response.json();
-  return shows;
+export const fetchData = async (target: FetchDataSet) => {
+  const response = await fetch(
+    `https://syntax.fm/api/${target.split(' ').join('')}`
+  );
+  const data = await response.json();
+  return data;
 };
 
 export const addCategory = (show: ShowType) => {
