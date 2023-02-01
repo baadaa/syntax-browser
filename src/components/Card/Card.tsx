@@ -42,6 +42,21 @@ export const Card: React.FC<CardProps> = ({
   const showNotes = parsedHTML.querySelector(
     'h2#show-notes + p, h2#show-notes + ul'
   );
+
+  const processSlug = () => {
+    const str = slug.split('/');
+    switch (str[2].length) {
+      case 1:
+        str[2] = '00' + str[2];
+        break;
+      case 2:
+        str[2] = '0' + str[2];
+        break;
+      default:
+        break;
+    }
+    return str.join('/');
+  };
   return (
     <article className={css.card} id={`episode-${number}`}>
       <div className={css.catalog}>
@@ -53,7 +68,7 @@ export const Card: React.FC<CardProps> = ({
       <div className={css.title}>
         <h3>
           <a
-            href={`https://syntax.fm${slug}`}
+            href={`https://syntax.fm${processSlug()}`}
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -73,21 +88,30 @@ export const Card: React.FC<CardProps> = ({
           />
         )}
         {showNotes && (
-          <>
-            <button
-              data-expanded={isExpanded}
-              className={css.toggle}
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? 'Close' : 'Open'} show notes
-            </button>
-            <ul
-              data-expanded={isExpanded}
-              dangerouslySetInnerHTML={{
-                __html: decode(showNotes.innerHTML),
-              }}
-            />
-          </>
+          <button
+            data-expanded={isExpanded}
+            className={css.toggle}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? 'Close' : 'Open'} show notes
+          </button>
+        )}
+        <a
+          href={`https://syntax.fm${processSlug()}`}
+          target="_blank"
+          rel="noreferrer noopener"
+          className={css.toggle}
+          data-type="launch"
+        >
+          Launch episode
+        </a>
+        {showNotes && (
+          <ul
+            data-expanded={isExpanded}
+            dangerouslySetInnerHTML={{
+              __html: decode(showNotes.innerHTML),
+            }}
+          />
         )}
       </div>
     </article>

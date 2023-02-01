@@ -72,10 +72,15 @@
   line-height: 1.5;
   .toggle {
     padding: 0.5rem 1rem;
+    display: inline-block;
     margin-top: 1rem;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: inherit;
+    letter-spacing: -0.025em;
     background: transparent;
     color: var(--cyan700);
+    text-decoration: none;
     transform: translate(-1rem);
     border: none;
     border-radius: 3rem;
@@ -84,6 +89,9 @@
     transition: transform 0.2s;
     &::before {
       content: '📕 ';
+    }
+    &[data-type="launch"]::before {
+      content: '🚀 ';
     }
     &:focus {
       box-shadow: var(--focus-shadow);
