@@ -155,6 +155,31 @@ export default function Home() {
         <title>Syntax Podcast: The Missing Browser</title>
         <meta name="description" content="Syntax Podcast browser" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="Enjoy your favorite tech podcast with search and filter functionality—with all the Sick Picks at your finger tips."
+        />
+        <meta name="og:title" content="Syntax Podcast: The Missing Browser" />
+        <meta
+          name="twitter:title"
+          content="Syntax Podcast: The Missing Browser"
+        />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:creator" content="Bumhan Yu<bumhan.yu@gmail.com>" />
+        <meta name="og:type" content="website" />
+        <meta
+          name="og:image"
+          content="https://syntax.bald.design/og-image-syntax.jpg"
+        />
+        <meta
+          name="og:description"
+          content="Enjoy your favorite tech podcast with search and filter functionality—with all the Sick Picks at your finger tips."
+        />
+        <meta
+          name="twitter:description"
+          content="Enjoy your favorite tech podcast with search and filter functionality—with all the Sick Picks at your finger tips."
+        />
+
         <link rel="icon" href="/barbecue.png" />
       </Head>
       <Layout>

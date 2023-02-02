@@ -197,12 +197,12 @@
     label {
       margin-left: .5rem;
       text-transform: capitalize;
-      flex: 1;
+      flex: 1 0 auto;
       cursor: pointer;
     }
     input {
       cursor: pointer;
-      flex: 0;
+      flex: 0 0 1.5rem;
     }
     .elem {
       display: flex;
