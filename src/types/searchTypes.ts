@@ -3,8 +3,9 @@ import { FetchDataSet } from './fetchingDataTypes';
 export type DictionaryType = {
   number: number;
   hash: string;
-  title: string;
-  text: string;
+  title?: string;
+  text?: string;
+  pick?: string;
 };
 
 export type SearchProps = {

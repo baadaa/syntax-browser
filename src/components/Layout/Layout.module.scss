@@ -9,6 +9,40 @@
   main {
     max-width: 1024px;
   }
+  section[data-active="false"] {
+    display: none;
+  }
+  section[data-active="true"] {
+    display: block;
+  }
+  section[data-active="true"][data-picks="true"] {
+    display: flex;
+  }
+  section[data-picks="true"] {
+    li {
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+    li + li {
+      margin-top: 1rem;
+    }
+    li li {
+      margin-top:0;
+    }
+    a {
+      font-weight: 400;
+      color: var(--cyan700);
+    }
+    li p {
+      display: inline-block;
+    }
+
+    li ul {
+      background: transparent;
+      margin-top: .5rem;
+      margin-bottom: 1rem;
+    }
+  }
   @media screen and (max-width: 1300px) {
     justify-content: flex-start;
     main {

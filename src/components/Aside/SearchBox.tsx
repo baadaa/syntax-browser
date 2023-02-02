@@ -40,10 +40,10 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary, browseBy }) => {
   const [searchResults, setSearchResults] = React.useState<
     Array<Fuse.FuseResult<DictionaryType>>
   >([]);
-
+  console.log(dictionary);
   const fuseTitle = new Fuse(dictionary, {
     ...fuseOption,
-    keys: ['title'],
+    keys: ['title', 'pick'],
   });
   const resetSearch = () => {
     setSearchTerm('');
@@ -52,7 +52,7 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary, browseBy }) => {
     setErrorMessage('');
   };
   const triggerSearch = () => {
-    if (searchTerm.length < MIN_QUERY_LENGTH)
+    if (searchTerm.trim().length < MIN_QUERY_LENGTH)
       return setErrorMessage(`Provide at least ${MIN_QUERY_LENGTH} characters`);
     const foundTitles: Array<Fuse.FuseResult<DictionaryType>> =
       fuseTitle.search<DictionaryType>(searchTerm.trim());
@@ -75,6 +75,7 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary, browseBy }) => {
         break;
       default:
         setIsEntered(false);
+        setErrorMessage('');
         break;
     }
   };
@@ -97,6 +98,11 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary, browseBy }) => {
     ));
     return <ul>{list}</ul>;
   };
+
+  // Each time browse target changes, reset search bar
+  React.useEffect(() => {
+    resetSearch();
+  }, [browseBy]);
 
   React.useEffect(() => {
     if (!isEntered) setSearchResults([]);

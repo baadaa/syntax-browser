@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { parse } from 'node-html-parser';
 import Head from 'next/head';
-import { Card, YearlySection, NoMatch } from '@/components/Card/Card';
+import { SickPickCards, EpisodeCards } from '@/components/Card';
 import { Layout } from '@/components/Layout';
 import { Aside, FilterBox, SearchBox } from '@/components/Aside';
-import { ShowsByYear, DictionaryType, FetchDataSet } from '@/types';
+import { ShowsByYear, PickType, DictionaryType, FetchDataSet } from '@/types';
 import {
   localStorageIsAvailable,
   setLocalStorage,
   fetchData,
-  standardizeData,
+  standardizeEpisodes,
 } from '@/utils/utils';
 
 export default function Home() {
   const [shows, setShows] = useState<ShowsByYear>({});
-  const [picks, setPicks] = useState([]);
+  const [picks, setPicks] = useState<Array<PickType>>([]);
   const [browseBy, setBrowseBy] = useState<FetchDataSet>('shows');
   const [filteredList, setFilteredList] = useState<ShowsByYear>({});
   const [yearRange, setYearRange] = useState<Array<number>>([]);
-  const [dictionary, setDictionary] = useState<Array<DictionaryType>>([]);
+  const [showDictionary, setShowDictionary] = useState<Array<DictionaryType>>(
+    []
+  );
+  const [pickDictionary, setPickDictionary] = useState<Array<DictionaryType>>(
+    []
+  );
 
   // Scroll to the selected year section
   const handleYearSelector = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -65,8 +70,22 @@ export default function Home() {
         text,
       };
     });
-    setDictionary(dict);
+    setShowDictionary(dict);
   }, [filteredList]);
+
+  // Set search dictionary for Sick Picks
+  useEffect(() => {
+    const dict = picks.map((item) => {
+      const { id, html } = item;
+      const text = parse(html).querySelector(`ul`)?.innerText;
+      return {
+        number: id,
+        hash: `#pick-${id}`,
+        pick: text,
+      };
+    });
+    setPickDictionary(dict);
+  }, [picks]);
 
   // If the "last saved" timestamp doesn't exist, add one
   useEffect(() => {
@@ -87,7 +106,7 @@ export default function Home() {
     // Whenever fetching new data, save the timestamp
     const getFreshData = () => {
       fetchData('shows').then((list) => {
-        const massagedList = standardizeData(list);
+        const massagedList = standardizeEpisodes(list);
         setShows(massagedList);
         setLocalStorage('bald_syntax_shows', JSON.stringify(massagedList));
       });
@@ -96,6 +115,10 @@ export default function Home() {
         setLocalStorage('bald_syntax_picks', JSON.stringify(list));
       });
       persistLastSaved();
+    };
+    const restoreSavedData = () => {
+      setShows(JSON.parse(savedShows));
+      setPicks(JSON.parse(savedPicks));
     };
     if (!savedShows || !savedPicks) {
       // If local data doesn't exist (i.e. first time loading), get fresh data
@@ -109,7 +132,7 @@ export default function Home() {
       const currentTime = new Date().getTime();
       const DAY_IN_MILLISEC = 86400000;
       const isOld = currentTime - lastSaved > DAY_IN_MILLISEC;
-      isOld ? getFreshData() : setShows(JSON.parse(savedShows));
+      isOld ? getFreshData() : restoreSavedData();
     }
   }, []);
 
@@ -121,6 +144,11 @@ export default function Home() {
       .sort((a, b) => b - a);
     setYearRange(years);
   }, [shows]);
+
+  // Each time browse target changes, scroll to the top
+  React.useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [browseBy]);
   return (
     <>
       <Head>
@@ -138,36 +166,18 @@ export default function Home() {
             handleCategorySelector={handleCategorySelector}
             handleYearSelector={handleYearSelector}
           />
-          <SearchBox dictionary={dictionary} browseBy={browseBy} />
+          <SearchBox
+            dictionary={browseBy === 'shows' ? showDictionary : pickDictionary}
+            browseBy={browseBy}
+          />
         </Aside>
         <main>
-          {yearRange.map((year) => {
-            const yearlyList = filteredList[year];
-            return (
-              <YearlySection key={year} id={`year-${year}`}>
-                <h2>{year}</h2>
-                <div className="cards">
-                  {yearlyList &&
-                    yearlyList.map((show, i) => {
-                      const { number, title, date, slug, html, category } =
-                        show;
-                      return (
-                        <Card
-                          key={i}
-                          number={number}
-                          title={title}
-                          date={date}
-                          slug={slug}
-                          html={html}
-                          category={category}
-                        />
-                      );
-                    })}
-                </div>
-                {!yearlyList && <NoMatch />}
-              </YearlySection>
-            );
-          })}
+          <EpisodeCards
+            browseBy={browseBy}
+            yearRange={yearRange}
+            filteredList={filteredList}
+          />
+          <SickPickCards browseBy={browseBy} pickList={picks} />
         </main>
       </Layout>
     </>

@@ -7,7 +7,7 @@ export const setLocalStorage = (key = '', data = ''): void => {
 export const localStorageIsAvailable = (data: string): boolean =>
   !!window.localStorage.getItem(data);
 
-export const standardizeData = (showList: Array<ShowType>) => {
+export const standardizeEpisodes = (showList: Array<ShowType>) => {
   return showList.reduce((obj, show) => {
     const year = new Date(show.date).getFullYear();
     const showWithCategory = addCategory(show);

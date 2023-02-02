@@ -6,10 +6,11 @@ import { nameMonth, categoryName } from '@/utils/utils';
 import css from './Card.module.scss';
 
 type CardProps = {
-  number: number;
-  title: string;
-  date: number;
-  slug: string;
+  number?: number;
+  id?: number;
+  title?: string;
+  date?: number;
+  slug?: string;
   html: string;
   category?: string;
 };
@@ -24,11 +25,11 @@ export const NoMatch: React.FC<Props> = () => (
     <span>😢 </span> No episode found under selected category
   </div>
 );
-export const Card: React.FC<CardProps> = ({
+export const EpisodeCard: React.FC<CardProps> = ({
   number,
   title,
-  date,
-  slug,
+  date = 12345789,
+  slug = '',
   category,
   html,
 }) => {
@@ -111,6 +112,7 @@ export const Card: React.FC<CardProps> = ({
         </a>
         {showNotes && (
           <ul
+            className={css.episode}
             data-expanded={isExpanded}
             dangerouslySetInnerHTML={{
               __html: decode(showNotes),
@@ -118,6 +120,22 @@ export const Card: React.FC<CardProps> = ({
           />
         )}
       </div>
+    </article>
+  );
+};
+
+export const SickPickCard: React.FC<CardProps> = ({ id, html }) => {
+  const parsedHTML = parse(html);
+  const content = parsedHTML.querySelector(`ul`)?.innerHTML;
+
+  return (
+    <article className={`${css.card} ${css.pick}`} key={id} id={`pick-${id}`}>
+      <div className={css.catalog}>
+        <div className={css.ep} data-pick="true">
+          {id}
+        </div>
+      </div>
+      <div dangerouslySetInnerHTML={{ __html: decode(content || '') }}></div>
     </article>
   );
 };
