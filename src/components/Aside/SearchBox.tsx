@@ -40,7 +40,7 @@ export const SearchBox: React.FC<SearchProps> = ({ dictionary, browseBy }) => {
   const [searchResults, setSearchResults] = React.useState<
     Array<Fuse.FuseResult<DictionaryType>>
   >([]);
-  console.log(dictionary);
+  // console.log(dictionary);
   const fuseTitle = new Fuse(dictionary, {
     ...fuseOption,
     keys: ['title', 'pick'],

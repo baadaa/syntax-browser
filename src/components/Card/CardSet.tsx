@@ -8,7 +8,7 @@ type EpisodeProps = {
   yearRange: Array<number>;
   filteredList: ShowsByYear;
 };
-export const EpisodeCards: React.FC<EpisodeProps> = ({
+const EpCards: React.FC<EpisodeProps> = ({
   browseBy,
   yearRange,
   filteredList,
@@ -49,10 +49,7 @@ type SickPickProps = {
   browseBy: FetchDataSet;
   pickList: Array<PickType>;
 };
-export const SickPickCards: React.FC<SickPickProps> = ({
-  browseBy,
-  pickList,
-}) => {
+const EpPickCards: React.FC<SickPickProps> = ({ browseBy, pickList }) => {
   return (
     <section
       className={`picks ${css.year}`}
@@ -72,3 +69,7 @@ export const SickPickCards: React.FC<SickPickProps> = ({
     </section>
   );
 };
+
+export const EpisodeCards = React.memo(EpCards);
+
+export const SickPickCards = React.memo(EpPickCards);

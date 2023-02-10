@@ -25,7 +25,7 @@ export const NoMatch: React.FC<Props> = () => (
     <span>😢 </span> No episode found under selected category
   </div>
 );
-export const EpisodeCard: React.FC<CardProps> = ({
+const EpCard: React.FC<CardProps> = ({
   number,
   title,
   date = 12345789,
@@ -62,6 +62,7 @@ export const EpisodeCard: React.FC<CardProps> = ({
     }
     return str.join('/');
   };
+  console.log('rendering episode');
   return (
     <article className={css.card} id={`episode-${number}`}>
       <div className={css.catalog}>
@@ -87,6 +88,7 @@ export const EpisodeCard: React.FC<CardProps> = ({
       <div className={css.summary}>
         {intro && (
           <div
+            className="summaryText"
             dangerouslySetInnerHTML={{
               __html: decode(intro.innerHTML),
             }}
@@ -124,9 +126,10 @@ export const EpisodeCard: React.FC<CardProps> = ({
   );
 };
 
-export const SickPickCard: React.FC<CardProps> = ({ id, html }) => {
+export const PickCard: React.FC<CardProps> = ({ id, html }) => {
   const parsedHTML = parse(html);
   const content = parsedHTML.querySelector(`ul`)?.innerHTML;
+  console.log('rendering picks');
 
   return (
     <article className={`${css.card} ${css.pick}`} key={id} id={`pick-${id}`}>
@@ -139,3 +142,6 @@ export const SickPickCard: React.FC<CardProps> = ({ id, html }) => {
     </article>
   );
 };
+
+export const EpisodeCard = React.memo(EpCard);
+export const SickPickCard = React.memo(PickCard);
