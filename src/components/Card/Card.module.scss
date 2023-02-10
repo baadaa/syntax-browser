@@ -76,6 +76,12 @@
     h2 {
       width: 16rem;
     }
+    @media screen and (max-width: 750px) {
+      max-width: 50rem;
+    }
+    @media screen and (max-width: 550px) {
+      max-width: 30rem;
+    }
   }
   max-width: 90rem;
   font-size: 1.4rem;
