@@ -1,0 +1,30 @@
+.btn {
+  border: 1px solid var(--button-bg-colormode-border);
+  cursor: pointer;
+  outline: none;
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  width: auto;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 3rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background-color: var(--button-bg-colormode);
+  transition: color .2s, background-color .2s, box-shadow .2s;
+  &:hover {
+    background-color: var(--button-bg-colormode-hover);
+  }
+  svg {
+    width: 2rem;
+    height: 2rem;
+    path {
+      transition: fill .2s;
+    }
+  }
+  &:focus {
+    box-shadow: var(--focus-shadow);
+  }
+}

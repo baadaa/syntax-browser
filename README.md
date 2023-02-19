@@ -24,9 +24,11 @@ Using their `/api/` route in their Next.js app, I created a wrapper around Synta
 
 ### TODO
 
-- [ ] Build dark/light mode themes
+- [x] ~~Build dark/light mode themes~~
 - [x] ~~Extend to Sick Pick browser~~
 - [x] ~~Refine visual design and layout~~
+- [ ] Add a preloading screen
+- [ ] Improve performance
 
 ---
 

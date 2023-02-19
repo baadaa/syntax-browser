@@ -38,7 +38,9 @@ const EpCard: React.FC<CardProps> = ({
   const year = showDate.getFullYear();
   const month = nameMonth(showDate.getMonth());
   const day = showDate.getDate();
-  const parsedHTML = parse(html);
+  const parsedHTML = parse(html, {
+    blockTextElements: { pre: true, code: true, style: false },
+  });
   const intro = parsedHTML.querySelector('p:first-of-type');
   const showNotes = parsedHTML
     .querySelectorAll(
@@ -62,7 +64,8 @@ const EpCard: React.FC<CardProps> = ({
     }
     return str.join('/');
   };
-  console.log('rendering episode');
+  console.log(showNotes);
+  // console.log('rendering episode');
   return (
     <article className={css.card} id={`episode-${number}`}>
       <div className={css.catalog}>
@@ -129,7 +132,7 @@ const EpCard: React.FC<CardProps> = ({
 export const PickCard: React.FC<CardProps> = ({ id, html }) => {
   const parsedHTML = parse(html);
   const content = parsedHTML.querySelector(`ul`)?.innerHTML;
-  console.log('rendering picks');
+  // console.log('rendering picks');
 
   return (
     <article className={`${css.card} ${css.pick}`} key={id} id={`pick-${id}`}>
@@ -138,7 +141,7 @@ export const PickCard: React.FC<CardProps> = ({ id, html }) => {
           {id}
         </div>
       </div>
-      <div dangerouslySetInnerHTML={{ __html: decode(content || '') }}></div>
+      <ul dangerouslySetInnerHTML={{ __html: decode(content || '') }}></ul>
     </article>
   );
 };

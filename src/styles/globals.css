@@ -98,7 +98,10 @@ body {
   --page-heading-color: var(--cyan700);
   --page-subheading-color: var(--cyan500);
   --section-heading-color: var(--coolGray500);
+  --section-heading-bg: rgba(255, 255, 255, 0.6);
   --shownotes-bg: var(--coolGray100);
+  --shownotes-border: transparent;
+  --timestamp: var(--coolGray200);
   --sad-message-color: var(--yellow600);
   --error-message-color: var(--red600);
   --episode-border: var(--coolGray100);
@@ -106,15 +109,69 @@ body {
   --section-spacing: 9rem;
   --episode-spacing: 3rem;
   --filter-box-bg: #fff;
+  --filter-box-border: transparent;
+  --filter-label: var(--coolGray800);
   --input-bg: var(--cyan50);
   --search-btn-bg: var(--green500);
   --search-btn-hover-bg: var(--green600);
   --focus-shadow: 0 2px 15px rgba(50, 200, 240, 0.6);
   --error-shadow: 0 2px 15px rgba(200, 50, 50, 0.6);
-
+  --button-bg-colormode: var(--cyan100);
+  --button-bg-colormode-border: var(--cyan200);
+  --button-bg-colormode-hover: var(--cyan50);
+  --colormode-sun: var(--cyan500);
+  --colormode-moon: var(--cyan300);
+  --text-color: var(--coolGray900);
+  --search-match: var(--text-color);
+  --search-highlight: var(--cyan100);
+  --cancel-action: var(--coolGray900);
+  --card-link: var(--cyan700);
+  --header-bg: #fff;
+  --header-border: transparent;
   background-color: var(--body-bg);
+  transition: all .2s;
 }
+*, * > *, svg * {
+  transition: color .2s, background-color .2s, border .2s;
+}
+body.dark {
+  --body-bg: var(--coolGray900);
+  --page-heading-color: var(--cyan300);
+  --page-subheading-color: var(--cyan500);
+  --section-heading-color: var(--coolGray300);
+  --section-heading-bg: rgba(60, 60, 60, 0.6);
+  --shownotes-bg: var(--coolGray800);
+  --shownotes-border: var(--coolGray600);
+  --timestamp: var(--coolGray700);
+  --sad-message-color: var(--yellow600);
+  --error-message-color: var(--red600);
+  --episode-border: var(--coolGray700);
+  --section-border: var(--coolGray600);
+  --section-spacing: 9rem;
+  --episode-spacing: 3rem;
+  --filter-box-bg: var(--coolGray800);
+  --filter-box-border: var(--coolGray600);
+  --filter-label: var(--coolGray300);
+  --input-bg: var(--cyan800);
+  --search-btn-bg: var(--green500);
+  --search-btn-hover-bg: var(--green600);
+  --focus-shadow: 0 2px 15px rgba(50, 200, 240, 0.6);
+  --error-shadow: 0 2px 15px rgba(200, 50, 50, 0.6);
+  --button-bg-colormode: var(--cyan700);
+  --button-bg-colormode-border: var(--cyan600);
+  --button-bg-colormode-hover: var(--cyan600);
+  --colormode-sun: var(--yellow300);
+  --colormode-moon: var(--yellow500);
+  --search-highlight: var(--cyan700);
+  --search-match: var(--coolGray100);
+  --cancel-action: var(--coolGray200);
+  --text-color: var(--coolGray300);
+  --card-link: var(--cyan400);
+  --header-bg: var(--coolGray800);
+  --header-border: var(--coolGray600);
 
+
+}
 a {
   color: inherit;
 }

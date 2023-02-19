@@ -1,6 +1,7 @@
 .aside {
   max-width: 30rem;
   width: 100%;
+  color: var(--filter-label);
   p + p {
     margin-top: 1rem;
   }
@@ -84,6 +85,7 @@
     font-size: 1.6rem;
     padding: 0.5rem;
     outline: none;
+    color: var(--filter-label);
     font-family: inherit;
     background-color: var(--input-bg);
     &:focus {
@@ -141,6 +143,7 @@
     margin-top: 2rem;
     padding: 2rem;
     background: var(--filter-box-bg);
+    border: 1px solid var(--filter-box-border);
     border-radius: 1.2rem;
     box-shadow: var(--base-shadow);
   }
@@ -173,7 +176,8 @@
         margin-top: .75rem;
       }
       mark {
-        background-color: var(--cyan100);
+        color: var(--search-match);
+        background-color: var(--search-highlight);
       }
     }
     .searchResult[data-active='true'] {
@@ -224,7 +228,8 @@
     h1 {
       box-shadow: var(--base-shadow);
       padding: 0.5rem;
-      background-color: #fff;
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--header-border);
       width: 100%;
       position: absolute;
       top: 0;
@@ -251,13 +256,15 @@
       position: absolute;
       top: 6rem;
       right: 0rem;
-      background-color: #fff;
+      background-color: var(--filter-box-bg);
+      border: 1px solid var(--filter-box-border);
       box-shadow: var(--base-shadow);
       border-radius: 1rem 0 0 1rem;
     }
     .filters {
       margin: 0;
       box-shadow: none;
+      border: none;
     }
     .filters + .filters {
       padding-top: 0.5rem;

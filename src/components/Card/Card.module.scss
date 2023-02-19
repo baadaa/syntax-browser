@@ -27,7 +27,7 @@
     h2 {
       top: 2rem;
       margin-bottom: 3rem;
-      background-color: rgba(255, 255, 255, 0.6);
+      background-color: var(--section-heading-bg);
       box-shadow: var(--base-shadow);
       border-radius: 1rem;
       font-size: 2rem;
@@ -67,8 +67,16 @@
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: 10rem auto 45rem;
+  .catalog {
+    color: var(--text-color);
+  }
   &.pick {
     grid-template-columns: 10rem auto;
+    ul {
+      background-color: transparent;
+      margin: 0;
+      border: none;
+    }
     @media screen and (max-width: 1400px) {
       flex-direction: row;
       max-width: 80rem;
@@ -95,7 +103,7 @@
     font-family: inherit;
     letter-spacing: -0.025em;
     background: transparent;
-    color: var(--cyan700);
+    color: var(--card-link);
     text-decoration: none;
     transform: translate(-1rem);
     border: none;
@@ -129,7 +137,7 @@
     font-size: 1.2rem;
   }
   h3 a {
-    color: var(--cyan700);
+    color: var(--card-link);
     display: inline-block;
     text-decoration: none;
     transition: transform 0.2s;
@@ -145,6 +153,8 @@
     margin-top: 1rem;
     border-radius: 1rem;
     background-color: var(--shownotes-bg);
+    border: 1px solid var(--shownotes-border);
+    color: var(--text-color);
     box-sizing: border-box;
     padding: 0 2rem;
     font-size: 1.2rem;
@@ -172,10 +182,11 @@
     font-size: 1rem;
     display: inline-block;
     padding: 0.2rem 0.5rem;
-    background-color: var(--coolGray200);
+    background-color: var(--timestamp);
   }
   .summary {
     max-width: 50rem;
+    color: var(--text-color);
   }
   .category {
     display: inline-block;
