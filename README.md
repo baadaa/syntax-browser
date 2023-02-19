@@ -1,5 +1,7 @@
 # Syntax Podcast: _The Missing Browser_
 
+![Syntax podcast: the missing browser](https://syntax.bald.design/og-image-syntax.jpg)
+
 Hosted by two developers [Scott Tolinski](https://levelup.video) and [Wes Bos](https://wesbos.com), **[Syntax](https://syntax.fm)** is one of the most enjoyable tech podcasts available.
 
 While their official website of [Syntax.fm](https://syntax.fm) offers a nice listening experience, it can be tricky to search by keyword or filter by category.
@@ -24,7 +26,7 @@ Using their `/api/` route in their Next.js app, I created a wrapper around Synta
 
 - [ ] Build dark/light mode themes
 - [x] ~~Extend to Sick Pick browser~~
-- [ ] Refine visual design and layout
+- [x] ~~Refine visual design and layout~~
 
 ---
 
