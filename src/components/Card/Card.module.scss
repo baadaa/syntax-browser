@@ -196,33 +196,33 @@
     font-size: 0.8rem;
     font-weight: 700;
     padding: 0.3rem 0.9rem;
-    background-color: var(--cyan100);
-    color: var(--cyan700);
+    background-color: var(--pill-regular-bg);
+    color: var(--pill-regular-text);
     border-radius: 2rem;
-    border: 1px solid var(--cyan500);
+    border: 1px solid var(--pill-regular-border);
     &::before {
       content: '🍖 ';
     }
     &[data-type='hasty'] {
-      background-color: var(--red100);
-      color: var(--red700);
-      border-color: var(--red500);
+      background-color: var(--pill-hasty-bg);
+      color: var(--pill-hasty-text);
+      border-color: var(--pill-hasty-border);
       &::before {
         content: '🍪 ';
       }
     }
     &[data-type='supper'] {
-      background-color: var(--green100);
-      border-color: var(--green500);
-      color: var(--green700);
+      background-color: var(--pill-supper-bg);
+      color: var(--pill-supper-text);
+      border-color: var(--pill-supper-border);
       &::before {
         content: '🍷 ';
       }
     }
     &[data-type='potluck'] {
-      background-color: var(--yellow100);
-      border-color: var(--yellow500);
-      color: var(--yellow700);
+      background-color: var(--pill-potluck-bg);
+      color: var(--pill-potluck-text);
+      border-color: var(--pill-potluck-border);
       &::before {
         content: '🍱 ';
       }
